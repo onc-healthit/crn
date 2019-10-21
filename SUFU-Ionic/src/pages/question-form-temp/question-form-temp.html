@@ -1,0 +1,300 @@
+<ion-header class="headercalss">
+  <ion-navbar>
+
+    <img class="logoinproduct" style="height: 38px;" src="assets/imgs/logo2.png" float-right>
+
+
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div>
+    <p class="categorytitle" class="lf-form-title" style="text-align: -webkit-center;margin-bottom: 13px;">
+      {{questionObject?.resource?.title}}
+    </p>
+  </div>
+
+
+  <div style="padding-left: 10px; padding-right: 10px">
+
+    <form class="tree" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <ng-template #dynamicCreation let-node="node" let-index="index">
+
+        <div class="node__label" *ngIf="node?.type == 'group' && node?.isShowNow">
+            <ion-card>
+              <ion-card-header>
+                  {{node?.text}}
+              </ion-card-header>
+              <ion-card-content>
+                          <!-- <ion-label>{{node?.text}}</ion-label> -->
+          <div *ngFor="let questionItem of node.item">
+
+               
+              <!-- <div *ngIf="node?.type != 'group'"> -->
+              <div class="boolenclass" *ngIf="questionItem.type == 'integer || decimal' && questionItem.isShowNow">
+  
+                <ion-item>
+                  <ion-label text-wrap stacked><span class="itemlinkIdclass">{{questionItem?.linkId}}</span>{{questionItem.text}}
+                  </ion-label>
+                  <ion-input type="number" placeholder="{{(!questionItem?.extension ? '' : questionItem?.extension[0]?.valueString)}}"
+                    [formControlName]="questionItem.linkId" (input)="onCallFunction(questionItem, Qindex)"></ion-input>
+                </ion-item>
+                <!-- <div *ngIf="form.controls[questionItem.linkId].invalid && form.controls[questionItem.linkId].dirty">
+                      <p class="errorClass" style="color:red;">
+                        Required field
+                      </p>
+                    </div> -->
+              </div>
+  
+              <div class="boolenclass" *ngIf="questionItem?.type == 'string || text' && questionItem.isShowNow">
+  
+                <ion-item>
+                  <ion-label text-wrap stacked><span class="itemlinkIdclass">{{questionItem?.linkId}}</span>{{questionItem?.text}}
+                  </ion-label>
+                  <ion-input type="text" [formControlName]="questionItem.linkId" (input)="onCallFunction(questionItem, Qindex)">
+                  </ion-input>
+                </ion-item>
+                <!-- <div *ngIf="form.controls[questionItem.linkId].invalid && form.controls[questionItem.linkId].dirty">
+                        <p class="errorClass" style="color:red;">
+                          Required field
+                        </p>
+                      </div> -->
+              </div>
+  
+              <div class="boolenclass" *ngIf="questionItem.type == 'choice' && questionItem.isShowNow">
+  
+                <ion-item>
+                  <ion-label text-wrap floating><span class="itemlinkIdclass">{{questionItem?.linkId}}</span>{{questionItem?.text}}
+                  </ion-label>
+                  <ion-select (ionChange)="onCallFunction(questionItem, Qindex)" [formControlName]="questionItem.linkId">
+                    <ion-option *ngFor="let opt of questionItem?.answerOption" [value]="opt">{{opt.valueCoding.display}}
+                    </ion-option>
+                  </ion-select>
+                </ion-item>
+                <!-- <div *ngIf="form.controls[questionItem.linkId].invalid && form.controls[questionItem.linkId].dirty">
+                        <p class="errorClass" style="color:red;">
+                          Required field
+                        </p>
+                      </div> -->
+              </div>
+  
+              <div class="boolenclass" *ngIf="questionItem.type == 'date' && questionItem.isShowNow">
+  
+                <ion-item>
+                  <ion-label text-wrap floating> <span class="itemlinkIdclass">{{questionItem?.linkId}}</span>{{questionItem?.text}}
+                  </ion-label>
+                  <ion-datetime placeholder="{{questionItem?.label}}" displayFormat="MM/DD/YYYY" [formControlName]="questionItem.linkId"
+                    (ionChange)="onCallFunction(questionItem, Qindex)"></ion-datetime>
+                </ion-item>
+                <!-- <div *ngIf="form.controls[questionItem.linkId].invalid && form.controls[questionItem.linkId].dirty">
+                            <p class="errorClass" style="color:red;">
+                              Required field
+                            </p>
+                          </div> -->
+              </div>
+  
+              <div class="boolenclass" *ngIf="questionItem.type == 'boolean' && questionItem.isShowNow">
+  
+                <ion-item>
+                  <ion-label text-wrap><span class="itemlinkIdclass">{{questionItem?.linkId}}</span>{{questionItem?.text}}</ion-label>
+                  <ion-toggle checked="false" (ionChange)="onCallFunction(questionItem, Qindex)" [formControlName]="questionItem.linkId">
+                  </ion-toggle>
+                </ion-item>
+                <!-- <div *ngIf="form.controls[questionItem.linkId].invalid && form.controls[questionItem.linkId].dirty">
+                        <p class="errorClass" style="color:red;">
+                          Required field
+                        </p>
+                      </div> -->
+              </div>
+  
+              <div class="boolenclass" *ngIf="questionItem.type == 'url' && questionItem.isShowNow">
+  
+                <ion-item>
+                  <ion-label text-wrap stacked><span class="itemlinkIdclass">{{questionItem?.linkId}}</span>{{questionItem.text}}
+                  </ion-label>
+                  <ion-input type="number" placeholder="{{(!questionItem?.extension ? '' : questionItem?.extension[0]?.valueString)}}"
+                    [formControlName]="questionItem.linkId" (input)="onCallFunction(questionItem, Qindex)"></ion-input>
+                </ion-item>
+                <!-- <div *ngIf="form.controls[questionItem.linkId].invalid && form.controls[questionItem.linkId].dirty">
+                      <p class="errorClass" style="color:red;">
+                        Required field
+                      </p>
+                    </div> -->
+              <!-- </div> -->
+  
+  
+              <!-- <div *ngIf="item.type == 'group' ">
+                    <ion-label>{{item?.text}}</ion-label>
+                    <page-display-questions [question]="item.item" [form]="form"></page-display-questions>
+                  </div> -->
+  
+              <!-- </div> -->
+              <!-- </form> -->
+  
+            </div>
+  
+            <div class="node__children" *ngIf="questionItem?.length > 0">
+                <!-- <ng-template> -->
+                  <ng-template [ngTemplateOutlet]="dynamicCreation" [ngTemplateOutletContext]="{ node: questionItem, index: '4'}">
+                  </ng-template>
+                <!-- </ng-template> -->
+              </div>
+            
+              <div class="node__children" *ngIf="questionItem?.type == 'group'">
+                  <!-- <ng-template> -->
+                    <ng-template [ngTemplateOutlet]="dynamicCreation" [ngTemplateOutletContext]="{ node: questionItem, index: '4'}">
+                    </ng-template>
+                  <!-- </ng-template> -->
+                </div>
+  
+          </div>
+              </ion-card-content>
+            </ion-card>
+
+
+  </div>
+
+  <div class="node__label" *ngIf="node.length > 0">
+      <!-- <ion-label>{{node?.text}}</ion-label> -->
+    <!-- <ion-label>{{node?.text}}</ion-label> -->
+    <div *ngFor="let questionItem of node">
+        
+      <!-- <div *ngIf="node?.type != 'group'"> -->
+      <div class="boolenclass" *ngIf="questionItem.type == 'integer || decimal' && questionItem.isShowNow">
+
+        <ion-item>
+          <ion-label text-wrap stacked><span class="itemlinkIdclass">{{questionItem?.linkId}}</span>{{questionItem.text}}
+          </ion-label>
+          <ion-input type="number" placeholder="{{(!questionItem?.extension ? '' : questionItem?.extension[0]?.valueString)}}"
+            [formControlName]="questionItem.linkId" (input)="onCallFunction(questionItem, Qindex)"></ion-input>
+        </ion-item>
+        <!-- <div *ngIf="form.controls[questionItem.linkId].invalid && form.controls[questionItem.linkId].dirty">
+              <p class="errorClass" style="color:red;">
+                Required field
+              </p>
+            </div> -->
+      </div>
+
+      <div class="boolenclass" *ngIf="questionItem?.type == 'string || text' && questionItem.isShowNow">
+
+        <ion-item>
+          <ion-label text-wrap stacked><span class="itemlinkIdclass">{{questionItem?.linkId}}</span>{{questionItem?.text}}
+          </ion-label>
+          <ion-input type="text" [formControlName]="questionItem.linkId" (input)="onCallFunction(questionItem, Qindex)">
+          </ion-input>
+        </ion-item>
+        <!-- <div *ngIf="form.controls[questionItem.linkId].invalid && form.controls[questionItem.linkId].dirty">
+                <p class="errorClass" style="color:red;">
+                  Required field
+                </p>
+              </div> -->
+      </div>
+
+      <div class="boolenclass" *ngIf="questionItem.type == 'choice' && questionItem.isShowNow">
+
+        <ion-item>
+          <ion-label text-wrap floating><span class="itemlinkIdclass">{{questionItem?.linkId}}</span>{{questionItem?.text}}
+          </ion-label>
+          <ion-select (ionChange)="onCallFunction(questionItem, Qindex)" [formControlName]="questionItem.linkId">
+            <ion-option *ngFor="let opt of questionItem?.answerOption" [value]="opt">{{opt.valueCoding.display}}
+            </ion-option>
+          </ion-select>
+        </ion-item>
+        <!-- <div *ngIf="form.controls[questionItem.linkId].invalid && form.controls[questionItem.linkId].dirty">
+                <p class="errorClass" style="color:red;">
+                  Required field
+                </p>
+              </div> -->
+      </div>
+
+      <div class="boolenclass" *ngIf="questionItem.type == 'date' && questionItem.isShowNow">
+
+        <ion-item>
+          <ion-label text-wrap floating> <span class="itemlinkIdclass">{{questionItem?.linkId}}</span>{{questionItem?.text}}
+          </ion-label>
+          <ion-datetime placeholder="{{questionItem?.label}}" displayFormat="MM/DD/YYYY" [formControlName]="questionItem.linkId"
+            (ionChange)="onCallFunction(questionItem, Qindex)"></ion-datetime>
+        </ion-item>
+        <!-- <div *ngIf="form.controls[questionItem.linkId].invalid && form.controls[questionItem.linkId].dirty">
+                    <p class="errorClass" style="color:red;">
+                      Required field
+                    </p>
+                  </div> -->
+      </div>
+
+      <div class="boolenclass" *ngIf="questionItem.type == 'boolean' && questionItem.isShowNow">
+
+        <ion-item>
+          <ion-label text-wrap><span class="itemlinkIdclass">{{questionItem?.linkId}}</span>{{questionItem?.text}}</ion-label>
+          <ion-toggle checked="false" (ionChange)="onCallFunction(questionItem, Qindex)" [formControlName]="questionItem.linkId">
+          </ion-toggle>
+        </ion-item>
+        <!-- <div *ngIf="form.controls[questionItem.linkId].invalid && form.controls[questionItem.linkId].dirty">
+                <p class="errorClass" style="color:red;">
+                  Required field
+                </p>
+              </div> -->
+      </div>
+
+      <div class="boolenclass" *ngIf="questionItem.type == 'url' && questionItem.isShowNow">
+
+        <ion-item>
+          <ion-label text-wrap stacked><span class="itemlinkIdclass">{{questionItem?.linkId}}</span>{{questionItem.text}}
+          </ion-label>
+          <ion-input type="number" placeholder="{{(!questionItem?.extension ? '' : questionItem?.extension[0]?.valueString)}}"
+            [formControlName]="questionItem.linkId" (input)="onCallFunction(questionItem, Qindex)"></ion-input>
+        </ion-item>
+        <!-- <div *ngIf="form.controls[questionItem.linkId].invalid && form.controls[questionItem.linkId].dirty">
+              <p class="errorClass" style="color:red;">
+                Required field
+              </p>
+            </div> -->
+      <!-- </div> -->
+
+
+      <!-- <div *ngIf="item.type == 'group' ">
+            <ion-label>{{item?.text}}</ion-label>
+            <page-display-questions [question]="item.item" [form]="form"></page-display-questions>
+          </div> -->
+
+      <!-- </div> -->
+      <!-- </form> -->
+
+    </div>
+
+    <div class="node__children" *ngIf="questionItem?.length > 0">
+        <!-- <ng-template> -->
+          <ng-template [ngTemplateOutlet]="dynamicCreation" [ngTemplateOutletContext]="{ node: questionItem, index: '4'}">
+          </ng-template>
+        <!-- </ng-template> -->
+      </div>
+    
+      <div class="node__children" *ngIf="questionItem?.type == 'group'">
+          <!-- <ng-template> -->
+            <ng-template [ngTemplateOutlet]="dynamicCreation" [ngTemplateOutletContext]="{ node: questionItem, index: '4'}">
+            </ng-template>
+          <!-- </ng-template> -->
+        </div>
+
+  </div>
+
+</div>
+
+  </ng-template>
+
+  <ng-template [ngTemplateOutlet]="dynamicCreation" [ngTemplateOutletContext]="{node: questions, index: '1'}">
+  </ng-template>
+
+  <div text-center style="padding: 5px">
+    <button ion-button primary full (click)="onSubmit(form)">submit</button>
+  </div>
+
+
+  </form>
+
+  </div>
+
+</ion-content>
+<!-- <ion-footer> -->
+
+<!-- </ion-footer> -->

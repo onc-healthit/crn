@@ -1,0 +1,6 @@
+<ion-tabs [selectedIndex]="myIndex" >
+  <!-- <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home"></ion-tab> -->
+  <ion-tab [root]="tab2Root" tabTitle="Forms" tabIcon="list" (ionSelect)="myMethod()"></ion-tab>
+  <ion-tab [root]="tab3Root" tabTitle="Search Patient" tabIcon="search" (ionSelect)="Mypatientdata()"></ion-tab>
+  <ion-tab [root]="tab4Root" tabTitle="Submitted Forms" tabIcon="paper" ></ion-tab>
+</ion-tabs>

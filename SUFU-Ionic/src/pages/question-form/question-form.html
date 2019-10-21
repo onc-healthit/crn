@@ -1,0 +1,452 @@
+<ion-header class="headercalss">
+  <ion-navbar>
+
+    <img class="logoinproduct" style="height: 38px;" src="assets/imgs/logo2.png" float-right>
+
+
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div *ngIf="isFrom == 'newForm'">
+    <p class="categorytitle" class="lf-form-title" style="text-align: -webkit-center;margin-bottom: 13px;">
+      {{questionObject?.resource?.title}}
+    </p>
+  </div>
+  <div *ngIf="isFrom != 'newForm'">
+    <p class="categorytitle" class="lf-form-title" style="text-align: -webkit-center;margin-bottom: 13px;">
+      {{questionObject?.title}}
+    </p>
+  </div>
+
+  <div>
+
+    <form class="tree" [formGroup]="form">
+      <ng-template #dynamicCreation let-node="node">
+        <div class="node" [class.node--selected]="( node === selectedTreeNode )">
+            <!-- class="node__label" -->
+          <div >
+
+            <div *ngIf="node?.type != 'group'" class="lf-layout-horizontal lf-table-item  lf-first-item ">
+
+              <div class="boolenclass"
+                *ngIf="(node?.type == 'string' && node?.text == 'UDI (numbers only, max 14 digits)') && node.isShowNow">
+
+
+                <ion-label text-wrap stacked><span class="itemlinkIdclass">{{node?.linkId}}</span>{{node.text}}
+                </ion-label>
+
+                <div text-center style="margin-top: 4px;">
+                  <button ion-button item-end
+                    (click)="scaningUID(item)">
+                    Scan UDI
+                  </button>
+                  <p style="margin-top: 7px;"> or </p>
+                </div>
+                <ion-item>
+                  <ion-input type="text" [disabled]="form.controls[node.linkId].disabled" class="inutclass" placeholder="{{(!node?.extension ? '' : node?.extension[0]?.valueString)}}"
+                    [formControlName]="node.linkId" maxlength="{{node?.maxLength}}" minlength="{{node?.minLength}}" (input)="onCallFunction(node, Qindex)" (keyup)="gertdeviceinfo($event,node)"></ion-input>
+                </ion-item>
+                <!-- Validation -->
+                <div *ngIf="form.controls[node.linkId].invalid && form.controls[node.linkId].dirty">
+                  <p class="errorClass" *ngIf="form.controls[node.linkId].errors.required" style="color:red;">
+                    This field should not be empty
+                  </p>
+                  <p *ngIf="form.controls[node.linkId].errors.minlength" class="errorClass" style="color:red;">
+                      Maximum lenght should be greater {{node?.minLength}}
+                    </p>
+                    <p *ngIf="form.controls[node.linkId].errors.maxlength" class="errorClass" style="color:red;">
+                        Maximum lenght should be lesser {{node?.maxLength}}
+                      </p>
+                </div>
+
+              </div>
+
+              <div class="boolenclass"
+                *ngIf="((node?.type == 'integer' || node?.type == 'decimal') && node?.text != 'UDI (numbers only, max 14 digits)') && node.isShowNow">
+
+                <div class=" lf-form-horizontal-table-title lf-de-label"> <span
+                  class="linkIdclass">{{node.linkId}}</span> {{node.text}}<span
+                  style="color: #f10b0b;" *ngIf="node?.required == true">*</span></div>
+                <ion-item>
+
+                  <ion-input type="number" [disabled]="form.controls[node.linkId].disabled" class="inutclass" placeholder="{{(!node?.extension ? '' : node?.extension[0]?.valueString)}}"
+                    [formControlName]="node.linkId" maxlength="{{node?.maxLength}}" minlength="{{node?.minLength}}" (input)="onCallFunction(node, Qindex)"></ion-input>
+                </ion-item>
+                <!-- Validation -->
+                <div *ngIf="form.controls[node.linkId].invalid && form.controls[node.linkId].dirty">
+                    <p class="errorClass" *ngIf="form.controls[node.linkId].errors.required" style="color:red;">
+                      This field should not be empty
+                    </p>
+                    <p *ngIf="form.controls[node.linkId].errors.minlength" class="errorClass" style="color:red;">
+                        Maximum lenght should be greater {{node?.minLength}}
+                      </p>
+                      <p *ngIf="form.controls[node.linkId].errors.maxlength" class="errorClass" style="color:red;">
+                          Maximum lenght should be lesser {{node?.maxLength}}
+                        </p>
+                  </div>
+              </div>
+
+              <div class="boolenclass" 
+                *ngIf="((node?.type == 'string' || node?.type == 'text') && node?.text != 'UDI (numbers only, max 14 digits)') && node.isShowNow">
+
+                  <div class=" lf-form-horizontal-table-title lf-de-label"> <span
+                    class="linkIdclass">{{node.linkId}}</span> {{node.text}}<span
+                    style="color: #f10b0b;" *ngIf="node?.required == true">*</span></div>
+                <ion-item>
+
+                  <ion-input type="text" [disabled]="form.controls[node.linkId].disabled" class="inutclass" [formControlName]="node.linkId" (input)="onCallFunction(node, Qindex)">
+                  </ion-input>
+                </ion-item>
+                <!-- Validation -->
+                <div *ngIf="form.controls[node.linkId].invalid && form.controls[node.linkId].dirty">
+                    <p class="errorClass" *ngIf="form.controls[node.linkId].errors.required" style="color:red;">
+                      This field should not be empty
+                    </p>
+                    <p *ngIf="form.controls[node.linkId].errors.minlength" class="errorClass" style="color:red;">
+                        Maximum lenght should be greater {{node?.minLength}}
+                      </p>
+                      <p *ngIf="form.controls[node.linkId].errors.maxlength" class="errorClass" style="color:red;">
+                          Maximum lenght should be lesser {{node?.maxLength}}
+                        </p>
+                  </div>
+              </div>
+
+              <div class="boolenclass" *ngIf="(node.type == 'choice' || node.type == 'open-choice') && node.isShowNow">
+
+                <div *ngIf="node?.extension && node?.extension?.length > 0">
+                  <div *ngFor="let item of node?.extension">
+                    <!-- <div *ngIf="item?.valueCodeableConcept == undefined">
+                          <ion-item>
+                            <ion-label text-wrap floating><span class="itemlinkIdclass">{{node?.linkId}}</span>{{node?.text}}
+                            </ion-label>
+                            <ion-select (ionChange)="onCallFunction(node, Qindex)" [formControlName]="node.linkId">
+                              <ion-option *ngFor="let opt of node?.answerOption" [value]="opt">{{opt.valueCoding.display}}
+                              </ion-option>
+                            </ion-select>
+                          </ion-item>
+                        </div> -->
+
+                    <div *ngIf="item?.valueCodeableConcept">
+                      <div *ngIf="item?.valueCodeableConcept?.coding[0].code == 'check-boxes'">
+                       
+                         <ion-item>
+                          <ion-label text-wrap floating class="black"><span
+                              class="itemlinkIdclass">{{node?.linkId}}
+                            </span>{{node?.text}}
+                            <span style="color: #f10b0b;" *ngIf="node?.required == true">*</span>
+                          </ion-label>
+                          <ion-select multiple="true" (ionChange)="onCallFunction(node, Qindex)"
+                            [formControlName]="node.linkId">
+                            <ion-option *ngFor="let opt of node?.answerOption" [value]="(opt.valueCoding.display + '@@' + opt.valueCoding.code)">{{opt.valueCoding.display}}
+                            </ion-option>
+                          </ion-select>
+                        </ion-item>
+                        <div *ngIf="form.controls[node.linkId].invalid && form.controls[node.linkId].dirty">
+                            <p class="errorClass" style="color:red;">
+                              This field should not be empty
+                            </p>
+                          </div>
+                      </div>
+
+                      <div *ngIf="item?.valueCodeableConcept?.coding[0].code == 'drop-down'">
+                        <ion-item>
+                          <ion-label text-wrap floating class="black"><span
+                              class="itemlinkIdclass">{{node?.linkId}}
+                            </span>{{node?.text}}
+                            <span style="color: #f10b0b;" *ngIf="node?.required == true">*</span>
+                          </ion-label>
+                          <ion-select (ionChange)="onCallFunction(node, Qindex)" [formControlName]="node.linkId">
+                            <ion-option *ngFor="let opt of node?.answerOption" [value]="(opt.valueCoding.display + '@@' + opt.valueCoding.code)">{{opt.valueCoding.display}}
+                            </ion-option>
+                          </ion-select>
+                        </ion-item>
+                        <div *ngIf="form.controls[node.linkId].invalid && form.controls[node.linkId].dirty">
+                            <p class="errorClass" style="color:red;">
+                              This field should not be empty
+                            </p>
+                          </div>
+                      </div>
+
+                      <div *ngIf="item?.valueCodeableConcept?.coding[0].code == 'radio-button'">
+                        <ion-list radio-group [formControlName]="node.linkId"
+                          (ionChange)="onCallFunction(node, Qindex)">
+                          <ion-list-header>
+                            <span class="itemlinkIdclass">{{node?.linkId}}</span>{{node?.text}}
+                          </ion-list-header>
+                          <ion-item *ngFor="let opt of node?.answerOption">
+                            <ion-label>{{opt.valueCoding.display}}</ion-label>
+                            <ion-radio [value]="opt"></ion-radio>
+                          </ion-item>
+                        </ion-list>
+                        <div *ngIf="form.controls[node.linkId].invalid && form.controls[node.linkId].dirty">
+                            <p class="errorClass" style="color:red;">
+                              This field should not be empty
+                            </p>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- <div *ngIf="node?.extension && node?.extension?.length == 1">
+
+                  <div *ngIf="node?.extension[0].valueCodeableConcept">
+                    <div *ngIf="item?.valueCodeableConcept?.coding[0].code == 'check-boxes'">
+                    
+                      <ion-item>
+                        <ion-label text-wrap floating class="black"><span
+                            class="itemlinkIdclass">{{node?.linkId}}
+                          </span>{{node?.text}}
+                          <span style="color: #f10b0b;" *ngIf="node?.required == true">*</span>
+                        </ion-label>
+                        <ion-select multiple="true" (ionChange)="onCallFunction(node, Qindex)"
+                          [formControlName]="node.linkId">
+                          <ion-option *ngFor="let opt of node?.answerOption" [value]="(opt.valueCoding.display + '@@' + opt.valueCoding.code)">{{opt.valueCoding.display}}
+                          </ion-option>
+                        </ion-select>
+                      </ion-item>
+                    </div>
+
+                    <div *ngIf="node?.extension[0].valueCodeableConcept?.coding[0].code == 'drop-down'">
+                      <ion-item>
+                        <ion-label text-wrap floating class="black"><span
+                            class="itemlinkIdclass">{{node?.linkId}}
+                          </span>{{node?.text}}
+                          <span style="color: #f10b0b;" *ngIf="node?.required == true">*</span>
+                        </ion-label>
+                        <ion-select (ionChange)="onCallFunction(node, Qindex)" [formControlName]="node.linkId">
+                          <ion-option *ngFor="let opt of node?.answerOption" [value]="(opt.valueCoding.display + '@@' + opt.valueCoding.code)">{{opt.valueCoding.display}}
+                          </ion-option>
+                        </ion-select>
+                      </ion-item>
+                    </div>
+
+                    <div *ngIf="node?.extension[0].valueCodeableConcept?.coding[0].code == 'radio-button'">
+                      <ion-list radio-group [formControlName]="node.linkId" (ionChange)="onCallFunction(node, Qindex)">
+                        <ion-list-header>
+                          <span class="itemlinkIdclass">{{node?.linkId}}</span>{{node?.text}}
+                        </ion-list-header>
+                        <ion-item *ngFor="let opt of node?.answerOption">
+                          <ion-label>{{opt.valueCoding.display}}</ion-label>
+                          <ion-radio [value]="opt"></ion-radio>
+                        </ion-item>
+                      </ion-list>
+                    </div>
+                  </div>
+
+                </div> -->
+
+                <div *ngIf="node?.extension == undefined || node?.extension?.length <= 0">
+                  <ion-item>
+                    <ion-label text-wrap floating>
+                      <span class="itemlinkIdclass">{{node?.linkId}}
+                      </span>{{node?.text}}
+                      <span style="color: #f10b0b;" *ngIf="node?.required == true">*</span>
+                    </ion-label>
+                    <ion-select (ionChange)="onCallFunction(node, Qindex)" [formControlName]="node.linkId">
+                      <ion-option *ngFor="let opt of node?.answerOption" [value]="(opt.valueCoding.display + '@@' + opt.valueCoding.code)">{{opt.valueCoding.display}}
+                      </ion-option>
+                    </ion-select>
+                  </ion-item>
+                  <div *ngIf="form.controls[node.linkId].invalid && form.controls[node.linkId].dirty">
+                      <p class="errorClass" style="color:red;">
+                        This field should not be empty
+                      </p>
+                    </div>
+                </div>
+                <!-- Validation -->
+
+              </div>
+
+              <div class="boolenclass" *ngIf="node.type == 'date' && node.isShowNow">
+
+                  <div class=" lf-form-horizontal-table-title lf-de-label"> <span
+                    class="linkIdclass">{{node.linkId}}</span> {{node.text}}<span
+                    style="color: #f10b0b;" *ngIf="node?.required == true">*</span></div>
+                <ion-item>
+
+                  <ion-datetime placeholder="DD/MM/YYYY" displayFormat="DD/MM/YYYY" [formControlName]="node.linkId"
+                    (ionChange)="onCallFunction(node, Qindex)"></ion-datetime>
+                </ion-item>
+                <!-- Validation -->
+                <div *ngIf="form.controls[node.linkId].invalid && form.controls[node.linkId].dirty">
+                  <p class="errorClass" style="color:red;">
+                    This field should not be empty
+                  </p>
+                </div>
+              </div>
+
+              <div class="boolenclass" *ngIf="node.type == 'dateTime' && node.isShowNow">
+                  <div class=" lf-form-horizontal-table-title lf-de-label"> <span
+                    class="linkIdclass">{{node.linkId}}</span> {{node.text}}<span
+                    style="color: #f10b0b;" *ngIf="node?.required == true">*</span></div>
+                <ion-item>
+
+                  <ion-datetime placeholder="MMM DD, YYYY HH:mm" displayFormat="MMM DD, YYYY HH:mm"
+                    [formControlName]="node.linkId" (ionChange)="onCallFunction(node, Qindex)"></ion-datetime>
+                </ion-item>
+                <!-- Validation -->
+                <div *ngIf="form.controls[node.linkId].invalid && form.controls[node.linkId].dirty">
+                  <p class="errorClass" style="color:red;">
+                    This field should not be empty
+                  </p>
+                </div>
+              </div>
+
+              <div class="boolenclass" *ngIf="node.type == 'time' && node.isShowNow">
+                  <div class=" lf-form-horizontal-table-title lf-de-label"> <span
+                    class="linkIdclass">{{node.linkId}}</span> {{node.text}}<span
+                    style="color: #f10b0b;" *ngIf="node?.required == true">*</span></div>
+                <ion-item>
+
+                  <ion-datetime placeholder="HH:mm:ss" displayFormat="HH:mm:ss" [formControlName]="node.linkId"
+                    (ionChange)="onCallFunction(node, Qindex)"></ion-datetime>
+                </ion-item>
+                <!-- Validation -->
+                <div *ngIf="form.controls[node.linkId].invalid && form.controls[node.linkId].dirty">
+                  <p class="errorClass" style="color:red;">
+                    This field should not be empty
+                  </p>
+                </div>
+              </div>
+
+              <div class="boolenclass" *ngIf="node.type == 'boolean' && node.isShowNow">
+
+                <div *ngIf="node?.extension && node?.extension?.length > 0">
+                  <div *ngFor="let item of node?.extension">
+                    <div *ngIf="item?.valueCodeableConcept?.coding[0].code == 'radio-button'">
+                      <ion-list no-margin radio-group [formControlName]="node.linkId" (ionChange)="onCallFunction(node, Qindex)">
+                          <div class=" lf-form-horizontal-table-title lf-de-label"> <span
+                            class="linkIdclass">{{node.linkId}}</span> {{node.text}}<span
+                            style="color: #f10b0b;" *ngIf="node?.required == true">*
+                          </span>
+                        </div>
+                        <ion-grid no-padding>
+                          <ion-row padding-left padding-right>
+                            <ion-col>
+                                <ion-item no-lines>
+                                    <ion-label>Yes</ion-label>
+                                    <ion-radio [value]="true"></ion-radio>
+                                  </ion-item>
+                            </ion-col>
+                            <ion-col>
+                                <ion-item no-lines>
+                                    <ion-label>No</ion-label>
+                                    <ion-radio [value]="false"></ion-radio>
+                                  </ion-item>
+                            </ion-col>
+                          </ion-row>
+                        </ion-grid>
+                      </ion-list>
+                        <!-- Validation -->
+                        <div *ngIf="form.controls[node.linkId].invalid && form.controls[node.linkId].dirty">
+                          <p class="errorClass" *ngIf="form.controls[node.linkId].errors.required" style="color:red;">
+                            This field should not be empty
+                          </p>
+
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngIf="node?.extension == undefined || node?.extension?.length <= 0">
+
+                  <ion-item>
+                    <ion-label text-wrap>
+                      <span class="itemlinkIdclass">{{node?.linkId}}</span>{{node?.text}}
+                      <span style="color: #f10b0b;" *ngIf="node?.required == true">*</span> 
+                    </ion-label>
+                    <ion-toggle (ionChange)="onCallFunction(node, Qindex)"
+                      [formControlName]="node.linkId">
+                    </ion-toggle>
+                  </ion-item>
+                  <!-- Validation -->
+                <div *ngIf="form.controls[node.linkId].invalid && form.controls[node.linkId].dirty">
+                  <p class="errorClass" style="color:red;">
+                    This field should not be empty
+                  </p>
+                </div>
+                </div>
+
+              </div>
+
+              <div class="boolenclass" *ngIf="node.type == 'url' && node.isShowNow">
+                  <div class=" lf-form-horizontal-table-title lf-de-label"> <span
+                    class="linkIdclass">{{node.linkId}}</span> {{node.text}}<span
+                    style="color: #f10b0b;" *ngIf="node?.required == true">*</span></div>
+                <ion-item>
+
+                  <ion-input type="number" class="inutclass" placeholder="{{(!node?.extension ? '' : node?.extension[0]?.valueString)}}"
+                    [formControlName]="node.linkId" (input)="onCallFunction(node, Qindex)"></ion-input>
+                </ion-item>
+                <!-- Validation -->
+                <div *ngIf="form.controls[node.linkId].invalid && form.controls[node.linkId].dirty">
+                    <p class="errorClass" *ngIf="form.controls[node.linkId].errors.required" style="color:red;">
+                      This field should not be empty
+                    </p>
+                    <p *ngIf="form.controls[node.linkId].errors.minlength" class="errorClass" style="color:red;">
+                        Maximum lenght should be greater {{node?.minLength}}
+                      </p>
+                      <p *ngIf="form.controls[node.linkId].errors.maxlength" class="errorClass" style="color:red;">
+                          Maximum lenght should be lesser {{node?.maxLength}}
+                        </p>
+                  </div>
+              </div>
+
+              <div class="input-wrapper" *ngIf="node.type == 'display' && node.isShowNow">
+                  <ion-label text-wrap class="headerLabel">
+                    <div class=" lf-form-horizontal-table-title lf-de-label"> <span
+                      class="linkIdclass">{{node?.linkId}}</span> {{node?.text}}</div>
+                    </ion-label>
+              </div>
+
+
+            </div>
+            <!-- class="node__children" -->
+            <div  class="lf-layout-horizontal lf-table-item  lf-first-item " *ngIf="node?.type == 'group'">
+              <!-- <ion-label>{{node?.text}}</ion-label> -->
+
+              <div *ngIf="node?.type == 'group' && node.isShowNow">
+                <ion-item>
+                  <ion-label text-wrap>
+                    <div class=" lf-form-horizontal-table-title lf-de-label"> <span
+                      class="linkIdclass">{{node?.linkId}}</span> {{node?.text}}</div>
+                  </ion-label>
+                </ion-item>
+              </div>
+
+              <ng-template ngFor let-child [ngForOf]="node.item">
+                <ng-template ngFor [ngTemplateOutlet]="dynamicCreation" [ngTemplateOutletContext]="{ node: child}">
+                </ng-template>
+              </ng-template>
+
+            </div>
+            <div *ngIf="node?.length > 0">
+              <ng-template ngFor let-child [ngForOf]="node">
+                <ng-template ngFor [ngTemplateOutlet]="dynamicCreation" [ngTemplateOutletContext]="{ node: child}">
+                </ng-template>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template [ngTemplateOutlet]="dynamicCreation" , [ngTemplateOutletContext]="{node: questions, index: '1'}">
+      </ng-template>
+
+    </form>
+
+    <div text-center margin-top *ngIf="isFrom != 'viewform'">
+
+      <p *ngIf="ansEveryQueatiosn" style="color: red;font-size: 14px;">Please answer all mandatory questions</p>
+      <button color="primary" style="background-color: #008000b0;" class="submit-btn" ion-button
+        (click)="onSubmit(form, 'save')">Save <ion-spinner *ngIf="issaveLoading" name="crescent" style="margin-left: 10px;">
+        </ion-spinner></button>
+      <button color="primary" class="submit-btn" ion-button (click)="onSubmit(form, 'submit')">Submit <ion-spinner *ngIf="isLoading"
+          name="crescent" style="margin-left: 10px;"></ion-spinner></button>
+    </div>
+
+  </div>
+
+</ion-content>

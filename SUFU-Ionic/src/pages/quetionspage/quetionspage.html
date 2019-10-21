@@ -1,0 +1,430 @@
+<ion-header class="headercalss">
+  <ion-navbar>
+
+    <img class="logoinproduct" style="height: 38px;" src="assets/imgs/logo2.png" float-right>
+
+
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="contentclass">
+
+  <div>
+    <p class="categorytitle" class="lf-form-title" style="text-align: -webkit-center;margin-bottom: 13px;">
+      {{Questionnarie.title}}</p>
+  </div>
+
+  <div *ngFor="let item of MainQuestions; let queindex  = index">
+
+    <form [formGroup]="myForm">
+      <div class="boolenclass" *ngIf="item.type == 'boolean'">
+        <ion-item style="background: #fff;">
+          <ion-label text-wrap style="color: #3fa0d4;font-size: 14px;"> <span class="itemlinkIdclass">{{item.linkId}}
+            </span> {{item.text}} {{queindex}}<span style="color: #f10b0b;" *ngIf="item.required == true">*</span>
+            <p *ngIf="item.errorvalidation" style="margin-left:10px;color: red;font-size: 13px;margin-top: 18px;">
+              Please Select Options </p>
+          </ion-label>
+          <ion-select [interfaceOptions]="customActionSheetOptions" ngClass="{{item.linkId}}" interface="action-sheet"
+            formControlName="{{item.linkId}}" (ionChange)="stateChange($event,item,queindex)" placeholder="Select">
+            <ion-option value="Yes">Yes</ion-option>
+            <ion-option value="No">No</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <div>
+          <ng-template #dynamicQuestions></ng-template>
+        </div>
+
+      </div>
+
+
+      <div class="boolenclass" *ngIf="item.type == 'date'">
+        <ion-list style="padding-top: 11px;">
+          <ion-label text-wrap style="color: #3fa0d4;font-size: 14px;padding: 17px;"> <span
+              class="itemlinkIdclass">{{item.linkId}}</span> {{item.text}}<span style="color: #f10b0b;"
+              *ngIf="item.required == true">*</span></ion-label>
+          <ion-item style="background: #fff;" class="item item-block item-md item-select">
+            <ion-datetime display-format="MM-DD-YYYY" class=" inutclass" formControlName="{{item.linkId}}"
+              (ionChange)="getInputDateAnswer(item,$event)" placeholder={{item.extension[0].valueString}}
+              class="inutclass" picker-format="YYYY-MM-DD"></ion-datetime>
+          </ion-item>
+
+          <div>
+            <ng-template #dynamicQuestions></ng-template>
+          </div>
+          <p *ngIf="item.errorvalidation" style="margin-left:10px;color: red;font-size: 13px;margin-top: 18px;"> Please
+            Select Date </p>
+        </ion-list>
+      </div>
+
+      <div class="boolenclass" *ngIf=" item.type =='choice'" style="margin-top: 16px;">
+
+        <div *ngIf="item.extension[0].valueCodeableConcept !== undefined">
+          <div *ngIf="item.extension[0].valueCodeableConcept.text=='Drop down'">
+            <ion-list>
+              <div class=" lf-form-horizontal-table-title lf-de-label"> <span class="ng-binding"><span
+                    class="linkIdclass">{{item.linkId}}</span>{{item.text}}<span style="color: #f10b0b;"
+                    *ngIf="item.required == true">*</span></span></div>
+
+              <ion-item>
+                <ion-label text-wrap color="primary">{{item.text}} </ion-label>
+                <ion-select (ionChange)="groupdroupdownsMainItem($event,item,queindex)"
+                  formControlName="{{item.linkId}}">
+                  <ion-option *ngFor="let choice of item.answerOption" [value]='choice'>{{choice.valueCoding.display}}
+                  </ion-option>
+                </ion-select>
+              </ion-item>
+              <div>
+                <ng-template #dynamicQuestions></ng-template>
+              </div>
+            </ion-list>
+          </div>
+        </div>
+
+        <div *ngIf="item.extension[0].valueCodeableConcept == undefined">
+          <div *ngIf="item.extension[1].valueCodeableConcept.text=='Drop down'">
+            <ion-list>
+              <div class=" lf-form-horizontal-table-title lf-de-label"> <span class="ng-binding"><span
+                    class="linkIdclass">{{item.linkId}}</span>{{item.text}} <span style="color: #f10b0b;"
+                    *ngIf="item.required == true">*</span></span></div>
+
+              <ion-item>
+                <ion-label text-wrap color="primary">{{item.text}}</ion-label>
+                <ion-select multiple="true" (ionChange)="Groupdropdeonlinkes($event,item)"
+                  formControlName="{{item.linkId}}">
+                  <ion-option *ngFor="let choice of item.answerOption" [value]='choice'>{{choice.valueCoding.display}}
+                  </ion-option>
+                </ion-select>
+              </ion-item>
+              <div>
+                <ng-template #dynamicQuestions></ng-template>
+              </div>
+            </ion-list>
+          </div>
+
+          <div *ngIf="item.extension[1].valueCodeableConcept.text=='Checkboxes'">
+
+            <ion-list>
+              <div class=" lf-form-horizontal-table-title lf-de-label"> <span class="ng-binding"><span
+                    class="linkIdclass">{{item.linkId}}</span>{{item.text}}<span style="color: #f10b0b;"
+                    *ngIf="item.required == true">*</span></span></div>
+
+              <ion-item *ngFor="let choice of item.answerOption">
+                <ion-label text-wrap>{{choice.valueCoding.display}} </ion-label>
+                <ion-checkbox slot="end" formControlName="{{item.linkId}}"></ion-checkbox>
+              </ion-item>
+              <div>
+                <ng-template #dynamicQuestions></ng-template>
+              </div>
+              <p *ngIf="item.errorvalidation" style="text-align: center;color: red;font-size: 18px;"> Please Select
+                Options </p>
+            </ion-list>
+
+
+          </div>
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <div class="boolenclass" *ngIf="item.type == 'integer'">
+
+        <!-- <ion-list    > -->
+        <ion-label text-wrap text-wrap style="color: #3fa0d4;font-size: 14px;padding: 17px;"> <span
+            class="itemlinkIdclass">{{item.linkId}}</span> {{item.text}}<span style="color: #f10b0b;"
+            *ngIf="item.required == true">*</span></ion-label>
+        <ion-item style="background: #fff;" class="item item-block item-md item-select">
+          <ion-input type="number" class="inutclass" placeholder={{item.extension[0].valueString}}
+            formControlName="{{item.linkId}}" (input)="getNumberInputAnswer(item,$event.target.value)" required>
+          </ion-input>
+        </ion-item>
+        <div>
+          <ng-template #dynamicQuestions></ng-template>
+        </div>
+        <!-- </ion-list> -->
+        <p *ngIf="enterUidNumer" style="text-align: -webkit-center;color: red;margin-top: 8px;">Please enter UDI Number
+        </p>
+        <!-- <button   *ngIf="displaydeviceInfo" color="primary" style="margin-left: 31%;"  class="submit-btn" ion-button  (click)="getdeviceinfo(item.answer[0].valueInteger)" >Device Info</button> -->
+      </div>
+
+
+
+      <div class="boolenclass" *ngIf="item.type == 'text'">
+
+
+        <ion-label text-wrap text-wrap style="color: #3fa0d4;font-size: 14px;padding: 17px;"> <span
+            class="itemlinkIdclass">{{item.linkId}}</span>{{item.text}}<span style="color: #f10b0b;"
+            *ngIf="item.required == true">*</span></ion-label>
+        <ion-item style="background: #fff;" class="item item-block item-md item-select">
+          <ion-textarea type="text" class="inutclass" placeholder={{item.extension[0].valueString}}
+            formControlName="{{item.linkId}}" (input)="getInputAnswer(item,$event.target.value)" required>
+          </ion-textarea>
+        </ion-item>
+        <div>
+          <ng-template #dynamicQuestions></ng-template>
+        </div>
+
+
+      </div>
+
+
+      <!-- ///////////////////////////////////// group //////////////////////////////////////////  -->
+
+      <div class="boolenclass" *ngIf="item.type == 'group'">
+        <p class=" lf-form-horizontal-table-title lf-de-label" style="margin-bottom: 8px;"> <span
+            class="itemlinkIdclass">{{item.linkId}}</span> {{item.text}}</p>
+
+
+        <!-- <page-group-qurtions-display  [prop1]="name" >   </page-group-qurtions-display> -->
+        <div class="lf-layout-horizontal lf-table-item  lf-first-item "
+          *ngFor="let Groupitem of item.groupmainQuetions; let Groupindex  = index ">
+
+          <div class="boolenclass" *ngIf="Groupitem.type == 'boolean'">
+
+            <ion-item style="background: #fff;">
+              <ion-label text-wrap style="color: #3fa0d4;font-size: 14px;"> <span
+                  class="itemlinkIdclass">{{Groupitem.linkId}}</span> <span> {{Groupitem.text}} {{Groupindex}} <span
+                    style="color: #f10b0b;" *ngIf="Groupitem.required == true">*</span> </span>
+                <p *ngIf="Groupitem.errorvalidation"
+                  style="margin-left:10px;color: red;font-size: 13px;margin-top: 18px;"> Please Select Options </p>
+              </ion-label>
+
+              <ion-select interface="action-sheet" formControlName="{{Groupitem.linkId}}"
+                (ionChange)="groupstateChange($event,Groupitem,Groupitem.linkId)" placeholder="Select">
+                <ion-option value="Yes">Yes</ion-option>
+                <ion-option value="No">No</ion-option>
+              </ion-select>
+            </ion-item>
+            <div>
+              <ng-template #dynamicQuestions></ng-template>
+            </div>
+
+          </div>
+
+          <div class="boolenclass" *ngIf="Groupitem.type == 'date'">
+            <ion-list style="padding-top: 11px;">
+              <ion-label text-wrap style="color: #3fa0d4;font-size: 14px;padding: 17px;"> <span
+                  class="itemlinkIdclass">{{Groupitem.linkId}}</span> {{Groupitem.text}} {{Groupindex}}<span
+                  style="color: #f10b0b;" *ngIf="Groupitem.required == true">*</span></ion-label>
+              <ion-item style="background: #fff;" class="item item-block item-md item-select">
+                <ion-datetime display-format="MM-DD-YYYY" class=" inutclass "
+                  placeholder={{Groupitem.extension[0].valueString}} formControlName="{{Groupitem.linkId}}"
+                  class="inutclass" picker-format="YYYY-MM-DD"></ion-datetime>
+              </ion-item>
+
+              <div>
+                <ng-template #dynamicQuestions></ng-template>
+              </div>
+              <p *ngIf="Groupitem.errorvalidation"
+                style="margin-left:10px;color: red;font-size: 13px;margin-top: 18px;"> Please Select Date </p>
+            </ion-list>
+          </div>
+
+          <div class="boolenclass" *ngIf="Groupitem.type == 'integer'">
+            <ion-list style="padding-top: 11px;">
+              <ion-label text-wrap text-wrap style="color: #3fa0d4;font-size: 14px;padding: 17px;"> <span
+                  class="itemlinkIdclass">{{Groupitem.linkId}}</span> {{Groupitem.text}} {{Groupindex}}<span
+                  style="color: #f10b0b;" *ngIf="Groupitem.required == true">*</span></ion-label>
+              <ion-item style="background: #fff;" class="item item-block item-md item-select">
+                <ion-input type="number" class="inutclass" formControlName="{{Groupitem.linkId}}"
+                  placeholder={{Groupitem.extension[0].valueString}}
+                  (keyup)="gertLinkedQuetions($event,Groupitem,Groupitem.linkId)" required></ion-input>
+              </ion-item>
+            </ion-list>
+
+            <div>
+              <ng-template #dynamicQuestions></ng-template>
+            </div>
+          </div>
+
+          <div class="boolenclass" *ngIf=" Groupitem.type == 'display' ">
+            <p class=" lf-form-horizontal-table-title lf-de-label" style="margin-bottom: 8px;"> <span
+                class="itemlinkIdclass">{{Groupitem.linkId}}</span>{{Groupitem.text}} {{Groupindex}}<span
+                style="color: #f10b0b;" *ngIf="Groupitem.required == true">*</span></p>
+            <div>
+              <ng-template #dynamicQuestions></ng-template>
+            </div>
+          </div>
+
+
+          <div class="boolenclass" *ngIf=" Groupitem.type == 'text'">
+            <ion-list style="padding-top: 11px;">
+              <ion-label text-wrap text-wrap style="color: #3fa0d4;font-size: 14px;padding: 17px;"> <span
+                  class="itemlinkIdclass" style="margin-left: -2px;">{{Groupitem.linkId}}</span> {{Groupitem.text}}
+                {{Groupindex}}<span style="color: #f10b0b;" *ngIf="Groupitem.required == true">*</span></ion-label>
+              <ion-item style="background: #fff;" class="item item-block item-md item-select">
+                <ion-textarea type="number" class="inutclass" formControlName="{{Groupitem.linkId}}"
+                  placeholder="Enter Number" required></ion-textarea>
+              </ion-item>
+              <div>
+                <ng-template #dynamicQuestions></ng-template>
+              </div>
+            </ion-list>
+          </div>
+
+          <div class="boolenclass" *ngIf="Groupitem.type == 'string'">
+            <ion-list style="padding-top: 11px;">
+              <ion-label text-wrap text-wrap style="color: #3fa0d4;font-size: 14px;padding: 17px;"> <span
+                  class="itemlinkIdclass">{{Groupitem.linkId}}</span> {{Groupitem.text}} {{Groupindex}}<span
+                  style="color: #f10b0b;" *ngIf="Groupitem.required == true">*</span></ion-label>
+              <ion-item style="background: #fff;" class="item item-block item-md item-select">
+                <ion-input type="text" class="inutclass" placeholder="Enter Data" formControlName="{{Groupitem.linkId}}"
+                  (input)="getInputGroupStringAnswer(Groupitem.linkId, Groupitem,$event.target.value,Groupitem.linkId)"
+                  required></ion-input>
+              </ion-item>
+              <div>
+                <ng-template #dynamicQuestions></ng-template>
+              </div>
+            </ion-list>
+          </div>
+
+
+
+
+          <div class="boolenclass" *ngIf="Groupitem.type =='choice'" style="margin-top: 16px;">
+            <div *ngIf="Groupitem.extension[0].valueCodeableConcept != undefined">
+              <div *ngIf="Groupitem.extension[0].valueCodeableConcept.text=='Drop down'">
+                <ion-list>
+                  <div class=" lf-form-horizontal-table-title lf-de-label"> <span class="ng-binding"><span
+                        class="linkIdclass">{{Groupitem.linkId}}</span>{{Groupitem.text}} {{Groupindex}}<span
+                        style="color: #f10b0b;" *ngIf="Groupitem.required == true">*</span></span></div>
+
+                  <ion-item>
+                    <ion-label text-wrap color="primary">{{Groupitem.text}}</ion-label>
+                    <ion-select (ionChange)="Groupdropdwonsingleselect($event,Groupitem,Groupitem.linkId)"
+                      formControlName="{{Groupitem.linkId}}">
+                      <ion-option *ngFor="let choice of Groupitem.answerOption" [value]='choice'>
+                        {{choice.valueCoding.display}}</ion-option>
+                    </ion-select>
+                  </ion-item>
+                  <div>
+                    <ng-template #dynamicQuestions></ng-template>
+                  </div>
+                </ion-list>
+              </div>
+            </div>
+
+            <div *ngIf="Groupitem.extension[0].valueCodeableConcept == undefined">
+              <div *ngIf="Groupitem.extension[1].valueCodeableConcept.text=='Drop down'">
+                <ion-list>
+                  <div class=" lf-form-horizontal-table-title lf-de-label"> <span class="ng-binding"><span
+                        class="linkIdclass">{{Groupitem.linkId}}</span>{{Groupitem.text}} {{Groupindex}}<span
+                        style="color: #f10b0b;" *ngIf="Groupitem.required == true">*</span></span></div>
+
+                  <ion-item>
+                    <ion-label text-wrap color="primary">{{Groupitem.text}}</ion-label>
+                    <ion-select multiple="true" formControlName="{{Groupitem.linkId}}"
+                      (ionChange)="Groupdropdeonlinkes($event,linkitem)">
+                      <ion-option *ngFor="let choice of Groupitem.answerOption" [value]='choice'>
+                        {{choice.valueCoding.display}}</ion-option>
+                    </ion-select>
+                  </ion-item>
+                  <div>
+                    <ng-template #dynamicQuestions></ng-template>
+                  </div>
+                </ion-list>
+              </div>
+            </div>
+          </div>
+          <!-- ///////////////////////////////////////   group inside group //////////////////////////// -->
+          <div class="boolenclass" *ngIf="Groupitem.type == 'group'">
+            <p class=" lf-form-horizontal-table-title lf-de-label" style="margin-bottom: 8px;"> <span
+                class="itemlinkIdclass">{{Groupitem.linkId}}</span> {{Groupitem.text}}</p>
+            <ion-list style="padding-top: 11px;">
+              <div class="lf-layout-horizontal lf-table-item  lf-first-item "
+                *ngFor="let Groupitem of Groupitem.item; let Groupindex1  = index ">
+                <div class="boolenclass" *ngIf="Groupitem.type =='choice'" style="margin-top: 16px;">
+                  <div *ngIf="Groupitem.extension[0].valueCodeableConcept != undefined">
+                    <div *ngIf="Groupitem.extension[0].valueCodeableConcept.text=='Drop down'">
+                      <ion-list>
+                        <div class=" lf-form-horizontal-table-title lf-de-label"> <span class="ng-binding"><span
+                              class="linkIdclass">{{Groupitem.linkId}}</span>{{Groupitem.text}} {{Groupindex}}<span
+                              style="color: #f10b0b;" *ngIf="Groupitem.required == true">*</span></span></div>
+
+                        <ion-item>
+                          <ion-label text-wrap color="primary">{{Groupitem.text}}</ion-label>
+                          <ion-select (ionChange)="Groupdropdwonsingleselect($event,Groupitem)"
+                            formControlName="{{Groupitem.linkId}}">
+                            <ion-option *ngFor="let choice of Groupitem.answerOption" [value]='choice'>
+                              {{choice.valueCoding.display}}</ion-option>
+                          </ion-select>
+                        </ion-item>
+                        <div>
+                          <ng-template #dynamicQuestions></ng-template>
+                        </div>
+                      </ion-list>
+                    </div>
+                  </div>
+
+                  <div *ngIf="Groupitem.extension[0].valueCodeableConcept == undefined">
+                    <div *ngIf="Groupitem.extension[1].valueCodeableConcept.text=='Drop down'">
+                      <ion-list>
+                        <div class=" lf-form-horizontal-table-title lf-de-label"> <span class="ng-binding"><span
+                              class="linkIdclass">{{Groupitem.linkId}}</span>{{Groupitem.text}} {{Groupindex}}<span
+                              style="color: #f10b0b;" *ngIf="Groupitem.required == true">*</span></span></div>
+
+                        <ion-item>
+                          <ion-label text-wrap color="primary">{{Groupitem.text}}</ion-label>
+                          <ion-select multiple="true" (ionChange)="Groupdropdeonlinkes($event,linkitem)">
+                            <ion-option *ngFor="let choice of Groupitem.answerOption" [value]='choice'>
+                              {{choice.valueCoding.display}}</ion-option>
+                          </ion-select>
+                        </ion-item>
+                        <div>
+                          <ng-template #dynamicQuestions></ng-template>
+                        </div>
+                      </ion-list>
+                    </div>
+                  </div>
+                </div>
+                <div class="boolenclass" *ngIf=" Groupitem.type == 'text'">
+                  <ion-list style="padding-top: 11px;">
+                    <ion-label text-wrap text-wrap style="color: #3fa0d4;font-size: 14px;padding: 17px;"> <span
+                        class="itemlinkIdclass" style="margin-left: -2px;">{{Groupitem.linkId}}</span>
+                      {{Groupitem.text}} {{Groupindex}}<span style="color: #f10b0b;"
+                        *ngIf="Groupitem.required == true">*</span></ion-label>
+                    <ion-item style="background: #fff;" class="item item-block item-md item-select">
+                      <ion-textarea type="number" class="inutclass" placeholder="Enter Number" required></ion-textarea>
+                    </ion-item>
+                    <div>
+                      <ng-template #dynamicQuestions></ng-template>
+                    </div>
+                  </ion-list>
+                </div>
+
+
+              </div>
+            </ion-list>
+          </div>
+
+        </div>
+      </div>
+
+
+
+
+
+
+    </form>
+
+  </div>
+
+
+  <div text-center margin-top>
+
+    <p *ngIf="ansEveryQueatiosn" style="color: red;font-size: 14px;">Please answer all mandatory questions</p>
+    <button color="primary" style="background-color: #008000b0;" class="submit-btn" ion-button>Save <ion-spinner
+        *ngIf="issaveLoading" name="crescent" style="margin-left: 10px;"></ion-spinner></button>
+    <button color="primary" class="submit-btn" ion-button (click)="submitForm('submit')">Submit <ion-spinner
+        *ngIf="isLoading" name="crescent" style="margin-left: 10px;"></ion-spinner></button>
+  </div>
+
+
+  <!-- <ng-template [ngIf]="display"> test ng temlet</ng-template> -->
+
+
+</ion-content>

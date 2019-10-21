@@ -1,0 +1,84 @@
+<ion-header class="headercalss">
+  <ion-navbar>
+      <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+      </button>
+      <img class="logoinproduct"  style="height: 38px;" src="assets/imgs/logo2.png"  float-right  >
+    
+    <!-- </div> -->
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <p style="text-align: -webkit-center;font-size: 20px;margin-top: 11px;margin-bottom: -11px;font-weight: 500;" >Please Select Patient</p>
+
+    <ion-searchbar style="margin-top: 14px;margin-bottom: 11px;" (ionInput)="getItems($event)" ></ion-searchbar>
+
+    
+    <ion-fab right bottom style="margin-right: 20px;"  (click)="gotopatientform()">
+        <button ion-fab color="light" style="background-color: #00947c;" > <span style="font-size: 11px;color: aliceblue;"> <ion-icon name="add" style="margin-top: 19px;"></ion-icon></span></button>
+      </ion-fab>
+
+      <ion-item color="primary">
+          <ion-grid>
+            <ion-row>
+              <ion-col col-2>
+                Id
+              </ion-col>
+              <ion-col col-3>
+               First Name
+              </ion-col>
+              <ion-col col-3>
+                 Last Name
+                </ion-col>
+              <ion-col col-3>
+                DOB
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+
+
+        <ion-list>
+            <ion-item tappable *ngFor="let patient of patientlist">
+              <ion-grid>
+                <ion-row (click)="selectedPatient(patient);">
+                  <ion-col col-2>
+                    <div class="itemclass" id="qetitle">{{patient.resource.id}}</div>
+                  </ion-col>
+                  <ion-col col-3>
+                    <div  class="itemclass" id="qetitle">
+                      {{patient.resource.name[0].given[0]}}
+                      <!-- <ion-label floating style="text-align: -webkit-left;color: cornflowerblue;font-size: 14px;" text-wrap> ssdfsd</ion-label>
+                      <ion-input></ion-input> -->
+
+                    </div>
+                  </ion-col>
+                  <ion-col col-3>
+                      <div class="itemclass" id="qetitle">{{patient.resource.name[0].family}}</div>
+                    </ion-col>
+                  <ion-col col-3>
+                    <div class="itemclass" id="qetitle">{{patient.resource.birthDate}}</div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+          </ion-list>
+
+
+
+
+  <!-- <ion-list>
+    <ion-list-header>Follow us on Twitter</ion-list-header>
+    <ion-item  *ngFor="let patient of patientlist;let index  = index">
+     
+
+      <p  text-wrap  >{{patient.firstName}}</p>
+
+    
+    </ion-item>
+  </ion-list> -->
+
+   <p style="text-align: -webkit-center;color: red;font-size: 25px; margin-top: 44px;" *ngIf="NodataFound"> No Results Found</p>
+</ion-content>

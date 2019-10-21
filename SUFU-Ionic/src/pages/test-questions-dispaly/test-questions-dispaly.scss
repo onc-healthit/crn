@@ -1,0 +1,61 @@
+page-test-questions-dispaly {
+    .header{
+        background: url(./../assets/imgs/bg-header-1920x170.png);
+        
+      }
+
+      .toolbar-background-md {
+        background-color: #00778b;
+        //background: url();
+    }
+    .bar-button-default-md, .bar-button-clear-md-default, .bar-button-md-default {
+      color: #ffff;
+      background-color: transparent;
+  }
+  .itemclass{
+    color: black;
+    //text-align: justify;
+  }
+  .label {
+    display: inline !important;
+    padding: .2em .6em .3em !important;
+    font-size: 15px !important;
+    color: cornflowerblue !important;
+    border-radius: .25em !important;
+}
+
+.itemlinkIdclass1{
+  background-color: #066aa0;
+  color: #fff;
+  padding: 0px 6px;
+  text-align: -webkit-center;
+  border-radius: 5px;
+  height: 16px;
+  margin-right: 4px;
+}
+
+
+
+
+h2 {
+  cursor: pointer;
+  position: relative;
+  padding: 1em 0.35em;
+  font-size: 1.35em;
+  font-family: Verdana;
+  border-bottom: 1px solid rgba(210,210,210,1);
+  margin: 0;
+
+
+  /* Define the style rules for the 'arrow icons' */
+  span {
+     position: absolute;
+     right: 1em;
+     top: 1.2em;
+     font-size: 0.95em;
+  }
+}
+
+
+
+}

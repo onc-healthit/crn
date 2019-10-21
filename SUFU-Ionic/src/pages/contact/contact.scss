@@ -1,0 +1,36 @@
+page-contact {
+
+    .header{
+        background: url(./../assets/imgs/bg-header-1920x170.png);
+        
+      }
+    
+      .producttitle {
+        display: inline-flex;
+        img {
+       
+          width: 119px !important;
+          height: 49px !important;
+          margin-left: 21px;
+    }
+    }
+    
+      .toolbar-background-md {
+        border-color: #fff;
+       // background: url()
+    }
+
+    .itemclass{
+      color: black;
+    }
+
+    .label {
+      display: inline !important;
+      padding: .2em .6em .3em !important;
+      font-size: 75% !important;
+      color: #fff !important;
+      border-radius: .25em !important;
+  }
+    
+
+}

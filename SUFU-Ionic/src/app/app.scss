@@ -1,0 +1,176 @@
+// http://ionicframework.com/docs/theming/
+
+
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+
+.tabs-md .tabbar {
+  //  background: #00778b;
+  background: #0c5f96
+}
+.tabs-md .tab-button[aria-selected=true] .tab-button-icon {
+    color: #fff;
+    -webkit-transform: translate3d(0, -2px, 0);
+    transform: translate3d(0, -2px, 0);
+}
+
+.tabs-md .tab-button[aria-selected=true] .tab-button-text {
+   
+    transform: scale3d(1.16667, 1.16667, 1);
+    transition: transform 0.3s ease-in-out, -webkit-transform 0.3s ease-in-out;
+    color: #fff;
+}
+
+.tabs-md .tab-button-icon {
+    margin-top: 1px;
+    min-width: 2.4rem;
+    font-size: 2.4rem;
+    //color: #ad9696ba;
+    color: #f7b8a6;
+    transform-origin: 50% 150%;
+}
+
+.tabs-md .tab-button-text {
+    font-size: 1.2rem;
+    
+    transition: transform 0.3s ease-in-out, -webkit-transform 0.3s ease-in-out;
+    margin: 0;
+    //color: #ad9696ba;
+    color: #f7b8a6;
+    transform-origin: 50% 80%;
+}
+
+// ion-app.md [padding] .scroll-content {
+//     padding: 0px;
+//   }
+
+ion-app.md [padding] .scroll-content {
+  padding: 6px;
+}
+
+
+
+  ion-header ion-icon.back-button-icon.icon {
+    color: map-get($colors, light);
+}
+
+.bar-button-default-ios, .bar-button-default.bar-button-ios-default, .bar-button-clear-ios-default {
+    color: map-get($colors, light) ;
+  }
+  
+  .bar-button-default-md, .bar-button-default.bar-button-md-default, .bar-button-clear-md-default {
+    color: map-get($colors, light) ;
+  }
+  
+  .bar-button-default-wp, .bar-button-default.bar-button-wp-default, .bar-button-clear-wp-default {
+    color: map-get($colors, light) ;
+  }
+
+
+
+  .action-sheet-md .action-sheet-group:last-child {
+    padding-bottom: 0.8rem;
+    display: none;
+}
+
+  .action-sheet-md .action-sheet-button {
+   
+    text-align: start;
+    position: relative;
+    overflow: hidden;
+    min-height: 4.8rem;
+    font-size: 1.6rem;
+    color: #3fa0d4;
+    background: #fff;
+    padding: 7px 21px;
+    margin-top: 2px;
+    /* border-bottom: #223bef; */
+}
+
+.action-sheet-md .action-sheet-button.avtivated {
+  background: blueviolet;
+
+}
+
+.select-md .select-placeholder {
+  color: #3fa0d4;
+}
+
+.select-text {
+  overflow: hidden;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #3fa0d4;
+  min-width: 16px;
+  font-size: inherit;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.label {
+  display: inline;
+  padding: .2em .6em .3em;
+  font-size: 98%;
+  color: black;
+  border-radius: .25em;
+}
+.alert-md .alert-radio-label {
+  overflow: hidden;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  text-overflow: ellipsis;
+  white-space: normal ;
+  color: initial;
+  padding: 13px 26px;
+}
+.alert-md .alert-checkbox-label {
+  overflow: hidden;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  text-overflow: ellipsis;
+  white-space: normal;
+  color: initial;
+  padding: 13px 26px;
+}
+
+//  .select-text {
+//   overflow: hidden;
+//   -webkit-box-flex: 1;
+//   -webkit-flex: 1;
+//   -ms-flex: 1;
+//   flex: 1;
+//   color: black !important;
+//   min-width: 16px;
+//   font-size: inherit;
+//   text-overflow: ellipsis;
+//   white-space: normal;
+// }
+
+
+
+//   page-questions .bar-button-default-md, page-questions .bar-button-clear-md-default, page-questions .bar-button-md-default {
+//     color: #ffff;
+//     background-color: transparent;
+// }
+
+// page-questionnaries .bar-button-default-md, page-questionnaries .bar-button-clear-md-default, page-questionnaries .bar-button-md-default {
+//     color: #ffff;
+//     background-color: transparent;
+// }

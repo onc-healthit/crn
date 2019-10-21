@@ -1,0 +1,174 @@
+<!--
+  Generated template for the DynamicQuestionsComponentPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- <ion-header>
+  <ion-navbar>
+    <ion-title>DynamicQuestionsComponent</ion-title>
+  </ion-navbar>
+</ion-header> -->
+
+
+<ion-content padding  [style.padding-bottom.%]="dynamicpadding" >
+    <div   class="lf-form-table ng-scope" >
+        <div  class="lf-layout-horizontal lf-table-item  lf-first-item "  *ngFor="let linkitem of LinkedQ;let Linkedindex  = index">
+            <form [formGroup]="myForm"   >
+          <ion-card *ngIf="linkitem.type =='date'" >
+                <ion-list >
+                  <!-- <ion-label color="primary" class="lableclass">{{linkitem.text}}</ion-label> -->
+                  <div class=" lf-form-horizontal-table-title lf-de-label"> <span class="linkIdclass">{{linkitem.linkId}}</span>{{linkitem.text}}<span style="color: #f10b0b;" *ngIf="linkitem.required == true">*</span></div>
+                  <ion-item > 
+                  <ion-datetime display-format="MM-DD-YYYY"  (ionChange)="getInputDateAnswer(linkitem,$event)"  class=" inutclass " placeholder={{linkitem.extension[0].valueString}} formControlName="{{linkitem.linkId}}"  picker-format="YYYY-MM-DD"></ion-datetime> <ion-icon name="calendar"></ion-icon>
+                </ion-item>
+                
+                <p *ngIf="linkitem.errorvalidation" style="text-align: center;color: red;font-size: 18px;"> Please Select Date </p>
+                </ion-list>
+               
+              </ion-card>
+
+              <ion-card *ngIf="linkitem.type =='integer'" >
+                  <ion-list >
+                    <!-- <ion-label color="primary" class="lableclass">{{linkitem.text}}</ion-label> -->
+                    <div class=" lf-form-horizontal-table-title lf-de-label"> <span class="linkIdclass">{{linkitem.linkId}}</span>{{linkitem.text}}<span style="color: #f10b0b;" *ngIf="linkitem.required == true">*</span></div>
+                    <ion-item > 
+                        <ion-input type="number"  class="inutclass"   (input)="getintegerInputAnswer(linkitem,$event.target.value)"  placeholder="Enter Number"  formControlName="{{linkitem.linkId}}"  required></ion-input>
+                  </ion-item>
+                  
+                  <p *ngIf="linkitem.errorvalidation" style="text-align: center;color: red;font-size: 18px;"> Please Select Date </p>
+                  </ion-list>
+                 
+                </ion-card>
+
+              <ion-card *ngIf="linkitem.type =='boolean'" >
+                  <ion-item style="background: #fff;">
+                      <ion-label  text-wrap style="color: #3fa0d4;font-size: 14px;"> <span class="itemlinkIdclass">{{linkitem.linkId}} </span>  {{linkitem.text}}  <span style="color: #f10b0b;" *ngIf="linkitem.required == true">*</span>   <p *ngIf="linkitem.errorvalidation" style="margin-left:10px;color: red;font-size: 13px;margin-top: 18px;"> Please Select Options </p> </ion-label>
+                      <ion-select [interfaceOptions]="customActionSheetOptions"  formControlName="{{linkitem.linkId}}"  ngClass="{{linkitem.linkId}}" interface="action-sheet"  (ionChange)="stateChange($event,linkitem,Linkedindex)" placeholder="Select">
+                        <ion-option value="Yes">Yes</ion-option>
+                        <ion-option value="No">No</ion-option>
+                        </ion-select> 
+                      </ion-item>
+      
+                       <div >
+                      <ng-template #dynamicQuestions  ></ng-template>
+                      </div>
+                 
+                </ion-card>
+                <ion-card  *ngIf="linkitem.type =='string'" >
+                    <ion-list >
+                      <!-- <ion-label class="lableclass" text-wrap>{{linkitem.text}}</ion-label> -->
+                      <div class=" lf-form-horizontal-table-title lf-de-label">  <span class="linkIdclass">{{linkitem.linkId}}</span>{{linkitem.text}}<span style="color: #f10b0b;" *ngIf="linkitem.required == true">*</span></div>
+                 <ion-item  >
+                    <ion-input type="text"  class="inutclass" placeholder="Enter Data"  (input)="getintegerInputAnswer(linkitem,$event.target.value)"  formControlName="{{linkitem.linkId}}" required></ion-input>
+                 </ion-item>
+                 <div >
+                    <ng-template #dynamicQuestions  ></ng-template>
+                    </div>
+                 <p *ngIf="linkitem.errorvalidation" style="text-align: center;color: red;font-size: 18px;"> Please Enter Data </p>
+                </ion-list>
+                  </ion-card>
+
+                  <ion-card *ngIf="linkitem.type =='text'" >
+                    <ion-list>
+                        <div class=" lf-form-horizontal-table-title lf-de-label">  <span class="linkIdclass">{{linkitem.linkId}}</span>{{linkitem.text}}<span style="color: #f10b0b;" *ngIf="linkitem.required == true">*</span></div>
+                        <ion-item  >
+                            <ion-textarea type="text"  class="inutclass"  formControlName="{{linkitem.linkId}}" (input)="getintegerInputAnswer(linkitem,$event.target.value)"   placeholder={{linkitem.extension[0].valueString}}  formControlName="{{linkitem.linkId}}" required></ion-textarea>
+                         </ion-item>
+                         <div >
+                            <ng-template #dynamicQuestions  ></ng-template>
+                            </div>
+
+                
+                    </ion-list>
+                    
+                  </ion-card>
+
+
+                  <ion-card *ngIf="linkitem.type =='choice'">
+                      <div *ngIf="linkitem.extension[0].valueCodeableConcept == undefined" >
+
+
+                          <div *ngIf="linkitem.extension[1].valueCodeableConcept.text=='Checkboxes'">
+   
+                              <ion-list  >
+                                  <div class=" lf-form-horizontal-table-title lf-de-label"> <span class="ng-binding"><span class="linkIdclass">{{linkitem.linkId}}</span>{{linkitem.text}}</span></div>
+                                  
+                                  <ion-item *ngFor="let choice of linkitem.answerOption">
+                                    <ion-label text-wrap>{{choice.valueCoding.display}}</ion-label>
+                                    <ion-checkbox slot="end"  formControlName="{{linkitem.linkId}}"  (ionChange)="checkboxOptions(linkitem,choice,item,$event)"></ion-checkbox>
+                                  </ion-item>
+                                  <p *ngIf="linkitem.errorvalidation" style="text-align: center;color: red;font-size: 18px;"> Please Select Options </p>
+                                </ion-list>
+                                <div >
+                                    <ng-template #dynamicQuestions  ></ng-template>
+                                    </div>
+ 
+                          </div>
+
+
+                          <div *ngIf="linkitem.extension[1].valueCodeableConcept.text=='Drop down'">
+
+                              <ion-list>
+                                  <div class=" lf-form-horizontal-table-title lf-de-label"> <span class="ng-binding"><span class="linkIdclass">{{linkitem.linkId}}</span>{{linkitem.text}}<span style="color: #f10b0b;" *ngIf="linkitem.required == true">*</span></span></div>
+                                 
+                                  <ion-item>
+                                      <ion-label text-wrap color="primary" >{{linkitem.text}}</ion-label>
+                                      <ion-select  multiple="true"  (ionChange)="Groupdropdeonlinkes($event,linkitem,Linkedindex)" formControlName="{{linkitem.linkId}}"  >
+                                        <ion-option *ngFor="let choice of linkitem.answerOption"  [value]='choice'>{{choice.valueCoding.display}}</ion-option>
+                                      </ion-select>
+                                    </ion-item>
+                                    <div >
+                                        <ng-template #dynamicQuestions  ></ng-template>
+                                        </div>
+                              </ion-list>
+                              
+                              </div>
+                      </div>
+
+                      <div *ngIf="linkitem.extension[0].valueCodeableConcept !== undefined" >
+
+
+                          <div *ngIf="linkitem.extension[0].valueCodeableConcept.text=='Drop down'">
+
+                              <ion-list>
+                                  <div class=" lf-form-horizontal-table-title lf-de-label"> <span class="ng-binding"><span class="linkIdclass">{{linkitem.linkId}}</span>{{linkitem.text}}<span style="color: #f10b0b;" *ngIf="linkitem.required == true">*</span></span></div>
+                                 
+                                  <ion-item>
+                                      <ion-label text-wrap color="primary" >{{linkitem.text}}</ion-label>
+                                      <ion-select  multiple="true"  (ionChange)="Groupdropdeonlinkes($event,linkitem,Linkedindex)"  formControlName="{{linkitem.linkId}}" >
+                                        <ion-option *ngFor="let choice of linkitem.answerOption"  [value]='choice'>{{choice.valueCoding.display}}</ion-option>
+                                      </ion-select>
+                                    </ion-item>
+                                    <div >
+                                        <ng-template #dynamicQuestions  ></ng-template>
+                                        </div>
+                              </ion-list>
+                              </div>
+                      </div>
+
+                      
+
+
+
+                  </ion-card>
+
+                
+  
+
+                
+
+
+
+
+              
+                <div class="boolenclass"  style="margin-top: 13px;" *ngIf="linkitem.type == 'group' " >
+                    <p class=" lf-form-horizontal-table-title lf-de-label" style="margin-bottom: 8px;"> <span class="itemlinkIdclass">{{linkitem.linkId}}</span> {{linkitem.text}}<span style="color: #f10b0b;" *ngIf="linkitem.required == true">*</span></p>
+                    <div >
+                        <ng-template #dynamicQuestions  ></ng-template>
+                        </div>
+                </div>
+         </form>
+        </div>
+    </div>
+</ion-content>

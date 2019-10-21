@@ -1,0 +1,166 @@
+page-patient-form {
+
+    .header{
+        background: url(./../assets/imgs/bg-header-1920x170.png);
+        
+      }
+
+      .toolbar-background-md {
+        background-color: #00778b;
+        background: url();
+    }
+    .bar-button-default-md, .bar-button-clear-md-default, .bar-button-md-default {
+        color: #ffff;
+        background-color: transparent;
+    }
+  
+        .producttitle {
+          display: inline-flex;
+          img {
+         
+            width: 119px !important;
+            height: 49px !important;
+            margin-left: 0px !important;
+            margin-top: -8px !important;
+      }
+      }
+
+      .select-text {
+        overflow: hidden;
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        color: black !important;
+        min-width: 16px;
+        font-size: inherit;
+        font-weight: 500;
+        text-overflow: ellipsis;
+        white-space: normal !important;
+    }
+    ion-label{
+      white-space:normal !important;
+      }
+      .item-select-customizado select {
+        position: relative;
+        max-width: 100%;
+        white-space: pre-line;
+        text-align: left;
+    }
+
+
+    .datetime-text {
+      overflow: hidden;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      font-weight: 500;
+      min-width: 16px;
+      min-height: 1.2em;
+      font-size: inherit;
+      line-height: 1.2;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+  }
+
+      // .item {
+      //   background-color: rgba(119, 119, 119, 0.8);
+      //   width: 80%;
+      //   display: block;
+      //   margin: 0 auto;
+      //   border-radius: 5px;
+      // }
+      // .item.item-block .item-inner {
+      //   border-bottom: 0px;
+      // }
+      .item-input .label {
+        color: black;
+      }
+
+      .text-input-md {
+        margin: 13px 8px;
+        padding: 0;
+        width: calc(100% - 8px - 8px);
+        text-align: -webkit-right !important;
+    }
+
+    .alert-ios .alert-radio-label{ white-space: pre-line;}
+.alert-md .alert-radio-label{ white-space: pre-line;}
+.alert-wp .alert-radio-label{ white-space: pre-line;}
+ion-label{
+  white-space:normal !important;
+  }
+
+
+  .alert-md .alert-radio-label {
+    overflow: hidden;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    text-overflow: ellipsis;
+    white-space: normal !important;
+    color: initial;
+    padding: 13px 26px;
+}
+
+    //   .item-datetime .label-md {
+    //     color: #fff;
+    // }
+    // .item-input .label-md, .item-select .label-md, .item-datetime .label-md {
+    //   color: #fff;
+    // }
+
+
+    // .item-md {
+    //     padding-left: 16px;
+    //     padding-right: 0;
+    //     position: relative;
+    //     font-size: 1.6rem;
+    //     font-weight: normal;
+    //     text-transform: none;
+    //     color: #000;
+    //     background-color: #fff;
+    //     -webkit-box-shadow: none;
+    //     box-shadow: none;
+    //     -webkit-transition: background-color 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    //     transition: background-color 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    // }
+
+    // .item {
+    //     background-color: rgba(119, 119, 119, 0.8);
+    //     width: 80%;
+    //     display: block;
+    //     margin: 0 auto;
+    //     border-radius: 5px;
+    // }
+
+    // .select-text {
+    //     overflow: hidden;
+    //     -webkit-box-flex: 1;
+    //     -webkit-flex: 1;
+    //     -ms-flex: 1;
+    //     flex: 1;
+    //     color: #fff !important;
+    //     min-width: 16px;
+    //     font-size: inherit;
+    //     text-overflow: ellipsis;
+    //     white-space: nowrap;
+    // }
+
+    // .datetime-text {
+    //     overflow: hidden;
+    //     -webkit-box-flex: 1;
+    //     -webkit-flex: 1;
+    //     -ms-flex: 1;
+    //     flex: 1;
+    //     color: #fff;
+    //     min-width: 16px;
+    //     min-height: 1.2em;
+    //     font-size: inherit;
+    //     line-height: 1.2;
+    //     text-overflow: ellipsis;
+    //     white-space: nowrap;
+    // }
+}

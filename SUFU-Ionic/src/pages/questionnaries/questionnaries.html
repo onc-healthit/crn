@@ -1,0 +1,57 @@
+<!--
+  Generated template for the QuestionnariesPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header class="headercalss">
+    <ion-navbar>
+      <!-- <div class="producttitle"> -->
+      <!-- <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button> -->
+      <!-- <img class="logoinproduct"  style="margin-left: 184%;margin-right: 6px;" src="assets/imgs/healthit.gov.logo.png" > -->
+      <img class="logoinproduct"  style="height: 38px;" src="assets/imgs/logo2.png"  float-right  >
+      <!-- </div> -->
+    </ion-navbar>
+  </ion-header>
+
+<ion-content padding >
+
+    <div *ngIf="categoryName =='Pelvic Organ Prolapse (POP)'">
+    <p class="categorytitle"  >Please Select Forms</p>
+
+    <!-- <ion-list class="QuestonnaryListClass" >
+           
+        <ion-item    *ngFor="let item of Questonnary; let  Index  = index"    (click)="displayQuestions(item)" >
+            <ion-label> {{item.resource.title}}</ion-label>
+           
+            <span   class="fa fa-angle-right" style="font-size:25px; color: #8EB1C7;"  item-end   ></span>
+
+          
+        </ion-item>
+ 
+    </ion-list> -->
+
+    <ion-card class="cardcalss" *ngFor="let item of Questonnary">
+
+        <ion-item  style="background: #008E9B; height: 64px;"  (click)="displayQuestions(item)">
+      <p  style="font-size: 19px;font-weight: 500;margin-left: 0px;" text-wrap>{{item.resource.title}}</p>
+      <span   class="fa fa-angle-right" style="font-size:25px; color: #fff;"  item-end   ></span>
+      </ion-item>
+        
+      <!-- <ion-item >
+
+      </ion-item> -->
+
+    </ion-card>
+    </div>
+
+
+    <div *ngIf="categoryName != 'Pelvic Organ Prolapse (POP)'" > 
+
+      <p style="text-align: -webkit-center;font-weight: 500;font-size: 23px;margin-top: 71px;">  There are no forms for this category </p>
+
+    </div>
+
+</ion-content>

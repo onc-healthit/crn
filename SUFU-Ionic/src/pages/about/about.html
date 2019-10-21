@@ -1,0 +1,135 @@
+<ion-header class="headercalss">
+  <ion-navbar>
+    
+      <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+      </button>
+   
+    
+    <img class="logoinproduct"  style="height: 38px;" src="assets/imgs/logo2.png"  float-right  >
+    
+    
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding   >   
+      <!-- <ion-list>
+
+          <ion-item  tappable *ngFor="let item of categorydata" (click)="Questionspage(item.categoryName)">
+            
+        <p  text-wrap  >{{item.categoryName}}</p>
+        <p text-wrap  style="font-size: 10px;color: gray;">{{item.categoryDescription}}</p>
+        <span  class="fa fa-angle-right" style="font-size:25px; color: black;"  item-end   ></span>
+      
+      </ion-item>
+            </ion-list> -->
+
+
+
+            <!-- <ion-card *ngFor="let item of categorydata"  style="box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 33px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);" >
+
+
+              <ion-list  (click)="toggleAccordion(item)">
+                  <ion-item >
+                     
+                      <ion-thumbnail item-left>
+                          <img src="assets/imgs/test12.jpg">
+                      </ion-thumbnail>
+                      
+                      <p class="heading"  style="background-color: white;"text-wrap>{{item.categoryName}}</p>
+                      <p text-wrap>{{item.categoryDescription}}</p>
+                       
+                            <h2 style="text-align: -webkit-right;">
+                                <span *ngIf ="item.isMenuOpen == true">&#9650;</span>
+                                <span *ngIf="item.isMenuOpen == false">&#9660;</span>
+                             </h2>
+                      
+                  </ion-item>
+              </ion-list>
+              
+               <div *ngIf="item.isMenuOpen">
+                  <p style="text-align: -webkit-center;font-size: 21px;font-weight: 400;"> Select Form</p>
+              <ion-list  *ngFor="let questions of item.children"  (click)="displayQuestions(questions,item)">
+                    <ion-item >
+               <p style="text-align: -webkit-center;font-size: 18px;color: #008E9B;font-weight: 500;border-style: groove;padding: 10px;" text-wrap>  {{questions.resource.title}}</p>
+                 </ion-item>
+              </ion-list>
+               </div>
+
+                <p style="text-align: -webkit-center;color: red;font-size: 18px;margin-top: 12px;margin-bottom: 10px;" *ngIf="item.displayerroermessage"> There are no forms for this category</p>
+
+          </ion-card> -->
+
+<!-- //////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+          <div class="accordion">
+              <div class="card"  *ngFor="let item of categorydata; let i  = index">
+                  <div class="card-header " id="headingOne">
+                      <ion-list  (click)="toggleAccordion(item)" style="background-color: black;margin-top: auto;margin-bottom: auto;">
+                          <ion-item>
+                             
+                              <ion-thumbnail item-left>
+                                  <img src="assets/imgs/test12.jpg">
+                              </ion-thumbnail>
+                              
+                              <p class="heading"  style="background-color: white;"text-wrap>{{item.categoryName}}</p>
+                              <p text-wrap>{{item.categoryDescription}}</p>
+  
+                              <p style="font-size: 15px;margin-left: 129px;margin-top: 16px;color: blue;"> View Forms</p>
+                                  
+                          </ion-item>
+                      </ion-list>
+                  </div>
+                  <div class="card-body" *ngIf="item?.isShowQuestions">
+                    <div>
+                        <p *ngIf="!item?.children" style="text-align: -webkit-center;color: red;font-size: 18px;"> 
+                            Coming Soon</p>
+                    </div>
+                    <div *ngIf="item?.children">
+                      <div *ngFor="let questions of item.children"   (click)="displayQuestions(questions,item)" >
+                        <ion-item>
+                            <p style="text-align: -webkit-center;font-size: 18px;color: #008E9B;font-weight: 500;" text-wrap>  {{questions.resource.title}}</p>
+                              </ion-item>
+                    </div>
+                  </div>
+                   </div>
+              </div>
+          </div>
+
+          <!-- <div class="accordion" id="accordionExample">
+            <div class="card"  *ngFor="let item of categorydata; let i  = index">
+              <div class="card-header " id="headingOne">
+                <div data-toggle="collapse" [attr.data-target]="'#gameDetails' + i">
+                    <ion-list  (click)="toggleAccordion(item)" style="background-color: black;margin-top: auto;margin-bottom: auto;">
+                        <ion-item >
+                           
+                            <ion-thumbnail item-left>
+                                <img src="assets/imgs/test12.jpg">
+                            </ion-thumbnail>
+                            
+                            <p class="heading"  style="background-color: white;"text-wrap>{{item.categoryName}}</p>
+                            <p text-wrap>{{item.categoryDescription}}</p>
+
+                            <p style="font-size: 15px;margin-left: 129px;margin-top: 16px;color: blue;"> View Forms</p>
+                                
+                        </ion-item>
+                    </ion-list>
+                </div>
+              </div>
+              <div class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample" >
+                  <p style="text-align: -webkit-center;color: red;font-size: 18px;padding: 15px;margin-top: 32px;margin-bottom: -63px;" *ngIf="!item?.children"> There are no forms for this category</p>
+                <div *ngIf="item?.children">
+                  <div class="card-body" *ngFor="let questions of item.children"   (click)="displayQuestions(questions,item)" >
+                    
+                    <ion-item  >
+                        <p style="text-align: -webkit-center;font-size: 18px;color: #008E9B;font-weight: 500;" text-wrap>  {{questions.resource.title}}</p>
+                          </ion-item>
+                </div>
+               </div>
+              </div>
+            </div>
+
+          </div> -->
+           
+</ion-content>

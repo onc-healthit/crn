@@ -1,0 +1,35 @@
+page-menu {
+
+    // .label {
+    //     display: inline !important;
+    //     padding: .2em .6em .3em !important;
+    //     font-size: 100% !important;
+    //      color: black !important;
+    //      text-align: start !important;
+    //     border-radius: .25em !important;
+    // }
+    .toolbar-background-md {
+        border-color: #a27070fc !important;
+        background: white !important;
+    }
+    .toolbar-title-md {
+        padding: 0 12px !important;
+        font-size: 2rem !important;
+        font-weight: 500 !important;
+        color:black !important;
+    }
+    .bar-button-default-md, .bar-button-default.bar-button-md-default, .bar-button-clear-md-default {
+        color: #0d6293 !important;
+    }
+
+    .menuTitle{
+        margin: 0 0 2px;
+        overflow: inherit;
+        font-size: 1.4rem;
+        line-height: normal;
+        text-overflow: inherit;
+        color: black;
+        text-align: -webkit-auto;
+    }
+
+}

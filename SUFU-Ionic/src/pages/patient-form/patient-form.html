@@ -1,0 +1,325 @@
+
+<ion-header class="headercalss">
+    <ion-navbar>
+    
+      <img class="logoinproduct"  style="height: 38px;" src="assets/imgs/logo2.png"  float-right  >
+     
+    </ion-navbar>
+  </ion-header>
+
+<ion-content padding>
+
+
+<div style="margin-top: 15px;" *ngIf="displayinfo">
+    
+         <ion-row style="margin-right: 0px;">
+                <ion-col col-12>
+                    <ion-item>
+                        <ion-label  style="font-size: 100%;font-weight: 500;">First Name :</ion-label>
+                        <ion-input   type="email" name='email' disabled="{{hasPatients}}"  style="font-size: 19px;" [(ngModel)]="firstname"  ></ion-input>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+
+            <ion-row style="margin-right: 0px;">
+                    <ion-col col-12>
+                        <ion-item>
+                            <ion-label  style="font-size: 100%;font-weight: 500;">Last Name :</ion-label>
+                            <ion-input  type="email" name='email' disabled="{{hasPatients}}"  style="font-size: 19px;" [(ngModel)]="lastname"  ></ion-input>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+
+                <ion-row style="margin-right: 0px;">
+                        <ion-col col-12>
+                            <ion-item>
+                                <ion-label  style="font-size: 100%;font-weight: 500;">Sex :</ion-label>
+                                <ion-input   type="email" name='email' disabled="{{hasPatients}}"  style="font-size: 19px;margin-left: 23px;" [(ngModel)]="gender"  ></ion-input>
+                            </ion-item>
+                        </ion-col>
+                    </ion-row>
+
+                    <ion-row style="margin-right: 0px;">
+                            <ion-col col-12>
+                                <ion-item>
+                                    <ion-label  style="font-size: 100%;color: black;text-align: start; font-weight: 500;">Date of Birth: </ion-label>
+                                    <!-- <ion-datetime display-format="MM-DD-YYYY" name='birthDate' [(ngModel)]="birthDate" picker-format="YYYY-MM-DD"></ion-datetime> -->
+                                    <ion-input   type="email" name='email' disabled="{{hasPatients}}"  style="font-size: 19px;margin-left: 23px;" [(ngModel)]="birthDate"  ></ion-input>
+                                </ion-item>
+                            </ion-col>
+                        </ion-row>
+                    
+
+                    
+
+                        <ion-row style="margin-right: 0px;">
+                                <ion-col col-12>
+                                    <ion-item>
+                                        <ion-label  style="font-size: 100%;font-weight: 500;">Ethnicity :</ion-label>
+                                        <ion-input type="email" name='email' disabled="{{hasPatients}}"  style="font-size: 19px;margin-left: 9px;" [(ngModel)]="ethnicity"  ></ion-input>
+                                    </ion-item>
+                                </ion-col>
+                            </ion-row>
+
+                            <ion-row style="margin-right: 0px;">
+                                    <ion-col col-12>
+                                        <ion-item>
+                                            <ion-label  style="font-size: 100%;font-weight: 500;">Race :</ion-label>
+                                            <ion-textarea   type="email" name='email' disabled="{{hasPatients}}"  style="font-size: 19px;margin-left: 32px;" [(ngModel)]="race"  ></ion-textarea>
+                                        </ion-item>
+                                    </ion-col>
+                                </ion-row>
+
+
+
+                                
+
+
+                                    <ion-row style="margin-right: 0px;">
+                                            <ion-col col-12>
+                                                <ion-item>
+                                                    <ion-label  style="font-size: 100%;font-weight: 500;">Height :</ion-label>
+                                                    <ion-input   type="text" name='email' disabled="{{hasPatients}}"  style="font-size: 19px;margin-left: 32px;" [(ngModel)]="dipslayHeight"  ></ion-input>
+                                                </ion-item>
+                                            </ion-col>
+                                        </ion-row>
+
+                                        <ion-row style="margin-right: 0px;">
+                                                <ion-col col-12>
+                                                    <ion-item>
+                                                        <ion-label  style="font-size: 100%;font-weight: 500;">Height Unit of Measure :</ion-label>
+                                                        <ion-input   type="email" name='email' disabled="{{hasPatients}}"  style="font-size: 19px;margin-left: 32px;" [(ngModel)]="dipslayHeightUnitofMeasure"  ></ion-input>
+                                                    </ion-item>
+                                                </ion-col>
+                                            </ion-row>
+                              
+
+                                            <ion-row style="margin-right: 0px;">
+                                                    <ion-col col-12>
+                                                        <ion-item>
+                                                            <ion-label  style="font-size: 100%;font-weight: 500;">Weight :</ion-label>
+                                                            <ion-input   type="text" name='email' disabled="{{hasPatients}}"  style="font-size: 19px;margin-left: 32px;" [(ngModel)]="displayWeight"  ></ion-input>
+                                                        </ion-item>
+                                                    </ion-col>
+                                                </ion-row>
+        
+                                                <ion-row style="margin-right: 0px;">
+                                                        <ion-col col-12>
+                                                            <ion-item>
+                                                                <ion-label  style="font-size: 100%;font-weight: 500;">Weight Unit of Measure :</ion-label>
+                                                                <ion-input   type="email" name='email' disabled="{{hasPatients}}"  style="font-size: 19px;margin-left: 32px;" [(ngModel)]="displayWeightUnitofMeasure"  ></ion-input>
+                                                            </ion-item>
+                                                        </ion-col>
+                                                    </ion-row>
+
+                                                    <div text-center  style="margin-top: -26px;">
+                                                            <button  style="margin-top: 39px;"  color="danger"   class="submit-btn" ion-button  (click)="backpage()" >Cancel</button>
+                                                          
+                                                            <button  style="margin-top: 39px;"  color="primary"  class="submit-btn" ion-button  (click)="submit()" >Confirm</button>
+                                                          </div>
+          
+           </div>
+
+
+
+
+<!-- /////////////////////////////////////Patient data enter / ////////////////////////////////////////////////////////// -->
+           <div style="margin-top: 15px;" *ngIf="!displayinfo">
+
+                <p style="text-align: -webkit-center;font-size: 20px;margin-top: 11px;margin-bottom: -11px;font-weight: 500;" >Please enter patient details</p>
+
+                <form [formGroup]="user"  (ngSubmit)="SubmitPatienForm()"  style="margin-top: 22px;" >
+                <ion-row style="margin-right: 0px;">
+                       <ion-col col-12>
+                           <ion-item>
+                               <ion-label  style="font-size: 100%;font-weight: 500;">First Name:<span style="color: #f10b0b;" >*</span></ion-label>
+                               <ion-input  style="text-align: -webkit-right;"  type="text" name='firstname'   style="font-size: 19px;" formControlName="firstName"  ></ion-input>
+                           </ion-item>
+                       </ion-col>
+                   </ion-row>
+       
+                   
+
+                       <ion-row style="margin-right: 0px;">
+                        <ion-col col-12>
+                            <ion-item>
+                                <ion-label  style="font-size: 100%;font-weight: 500;">Last Name:<span style="color: #f10b0b;" >*</span></ion-label>
+                                <ion-input  style="text-align: -webkit-right;"  type="email" name='lastname'   style="font-size: 19px;" formControlName="lastName" ></ion-input>
+                            </ion-item>
+                        </ion-col>
+                    </ion-row>
+       
+                    <ion-row style="margin-right: 0px;">
+                        <ion-col col-12>
+                            <ion-item>
+                                <ion-label  style="font-size: 100%;font-weight: 500;">Patient MRN:<span style="color: #f10b0b;" >*</span></ion-label>
+                                <ion-input  style="text-align: -webkit-right;"  type="number" name='PatientMRN'   style="font-size: 19px;" formControlName="PatientMRN" ></ion-input>
+                            </ion-item>
+                        </ion-col>
+                    </ion-row>
+       
+                           <ion-row >
+                                   <ion-col col-12>
+                                       <ion-item>
+                                           <ion-label style="font-size: 100%;color: black;text-align: start;font-weight: 500;">Sex:<span style="color: #f10b0b;" >*</span></ion-label>
+                                           <ion-select  style="font-size: 100%;font-weight: 500;"  formControlName="sex">
+                                               <ion-option value="male">Male</ion-option>
+                                               <ion-option value="female">Female</ion-option>
+                                               <ion-option value="unknown">Unknown</ion-option>
+                                             </ion-select>
+                                       </ion-item>
+                                   </ion-col>
+                               </ion-row>
+
+                               <ion-row style="margin-right: 0px;">
+                                <ion-col col-12>
+                                    <ion-item>
+                                        <ion-label  style="font-size: 100%;font-weight: 500;">Email:<span style="color: #f10b0b;" >*</span></ion-label>
+                                        <ion-input  style="text-align: -webkit-right;"  type=email name='EmailAddress'   style="font-size: 19px;" formControlName="EmailAddress" ></ion-input>
+                                    </ion-item>
+                                </ion-col>
+                            </ion-row>
+
+                               <ion-row style="margin-right: 0px;">
+                                    <ion-col col-12>
+                                        <ion-item>
+                                            <ion-label  style="font-size: 100%;color: black;text-align: start; font-weight: 500;">Date of Birth:<span style="color: #f10b0b;" >*</span></ion-label>
+                                            <ion-datetime display-format="MM-DD-YYYY" name='birthDate'  formControlName="birthDate" picker-format="YYYY-MM-DD"></ion-datetime>
+                                        </ion-item>
+                                    </ion-col>
+                                </ion-row>
+       
+                               <ion-row >
+                                    <ion-col col-12>
+                                        <ion-item>
+                                            <ion-label style="font-size: 100%;color: black;text-align: start;font-weight: 500;">Race:</ion-label>
+                                            <ion-select multiple="true"  style="font-size: 100%;font-weight: 500;" text-wrap  formControlName="race"   (ionChange)="selectedrace($event)">
+                                                <ion-option value="Native American or Alaska Native" text-wrap >Native American or Alaska Native</ion-option>
+                                                <ion-option value="South East Asian" text-wrap>South East Asian</ion-option>
+                                                <ion-option value="Black or Afro-Caribbean or African American" text-wrap >Black or Afro-Caribbean or African American</ion-option>
+                                                <ion-option value="White" text-wrap >White</ion-option>
+                                                <ion-option value="Middle Eastern or North African" text-wrap >Middle Eastern or North African</ion-option>
+                                                <ion-option value="South Asian or Indian " text-wrap >South Asian or Indian </ion-option>
+                                                <ion-option value="Native Hawaiian or Other Pacific Islander" text-wrap >Native Hawaiian or Other Pacific Islander</ion-option>
+                                                <ion-option value="Other" text-wrap >Other</ion-option>
+                                                <ion-option value="Not Disclosed" text-wrap >Not Disclosed</ion-option>
+                                              </ion-select>
+                                        </ion-item>
+                                    </ion-col>
+                                </ion-row>
+
+                                   <ion-row >
+                                        <ion-col col-12>
+                                            <ion-item>
+                                                <ion-label style="font-size: 100%;color: black;text-align: start;font-weight: 500;">Ethnicity:</ion-label>
+                                                <ion-select  style="font-size: 100%;font-weight: 500;"   formControlName="ethnicity" (ionChange)="selectedEthnicity($event)" >
+                                                    <ion-option value="Hispanic or Latino">Hispanic or Latino</ion-option>
+                                                    <ion-option value="Not Hispanic or Latino">Not Hispanic or Latino</ion-option>
+                                                    <ion-option value="Unknown">Not disclosed</ion-option>
+                                                  </ion-select>
+                                            </ion-item>
+                                        </ion-col>
+                                    </ion-row>
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+                                    <ion-row style="margin-right: 0px;">
+                                        <ion-col col-12>
+                                            <ion-item>
+                                                <ion-label  style="font-size: 100%;font-weight: 500;">Street Address:<span style="color: #f10b0b;" ></span></ion-label>
+                                                <ion-input  style="text-align: -webkit-right;"  type="email" name='lastname'   style="font-size: 19px;" formControlName="StreetAddress" ></ion-input>
+                                            </ion-item>
+                                        </ion-col>
+                                    </ion-row>
+
+                                    <ion-row style="margin-right: 0px;">
+                                        <ion-col col-12>
+                                            <ion-item>
+                                                <ion-label  style="font-size: 100%;font-weight: 500;">City:<span style="color: #f10b0b;" ></span></ion-label>
+                                                <ion-input  style="text-align: -webkit-right;"  type="text" name='City'   style="font-size: 19px;" formControlName="City" ></ion-input>
+                                            </ion-item>
+                                        </ion-col>
+                                    </ion-row>
+
+                                    <ion-row style="margin-right: 0px;">
+                                        <ion-col col-12>
+                                            <ion-item>
+                                                <ion-label  style="font-size: 100%;font-weight: 500;">State:<span style="color: #f10b0b;" ></span></ion-label>
+                                                <ion-input  style="text-align: -webkit-right;"  type="text" name='State'   style="font-size: 19px;" formControlName="State" ></ion-input>
+                                            </ion-item>
+                                        </ion-col>
+                                    </ion-row>
+                                    <ion-row style="margin-right: 0px;">
+                                        <ion-col col-12>
+                                            <ion-item>
+                                                <ion-label  style="font-size: 100%;font-weight: 500;">Zip Code:<span style="color: #f10b0b;" ></span></ion-label>
+                                                <ion-input  style="text-align: -webkit-right;"  type="number" name='zipcode'   style="font-size: 19px;" formControlName="ZipCode" ></ion-input>
+                                            </ion-item>
+                                        </ion-col>
+                                    </ion-row>
+            
+       
+                         <!-- //////////////////////////////////////////////////////////////// ///////////////// -->
+
+
+                                        <ion-row style="margin-right: 0px;">
+                                                <ion-col col-12>
+                                                    <ion-item>
+                                                        <ion-label  style="font-size: 100%;font-weight: 500;">Height:</ion-label>
+                                                        <ion-input  style="text-align: -webkit-right;"  type="number" name='height'   style="font-size: 19px;"  formControlName="height" ></ion-input>
+                                                    </ion-item>
+                                                </ion-col>
+                                            </ion-row>
+
+                                            <ion-row >
+                                                    <ion-col col-12>
+                                                        <ion-item>
+                                                            <ion-label style="font-size: 100%;color: black;text-align: start;font-weight: 500;">Height Unit of Measure:</ion-label>
+                                                            <ion-select  style="font-size: 100%;font-weight: 500;"    formControlName="heightUnitOfMeasure" >
+                                                                <ion-option value="Cm">Cm</ion-option>
+                                                                <ion-option value="In">In</ion-option>
+                                                              </ion-select>
+                                                        </ion-item>
+                                                    </ion-col>
+                                                </ion-row>
+
+                                                <ion-row style="margin-right: 0px;">
+                                                        <ion-col col-12>
+                                                            <ion-item>
+                                                                <ion-label  style="font-size: 100%;font-weight: 500;">Weight:</ion-label>
+                                                                <ion-input style="text-align: -webkit-right;"   type="number" name='Weight'   style="font-size: 19px;"  formControlName="weight" ></ion-input>
+                                                            </ion-item>
+                                                        </ion-col>
+                                                    </ion-row>
+
+                                                    <ion-row >
+                                                            <ion-col col-12>
+                                                                <ion-item>
+                                                                    <ion-label style="font-size: 100%;color: black;text-align: start;font-weight: 500;">Weight Unit of Measure:</ion-label>
+                                                                    <ion-select  style="font-size: 100%;font-weight: 500;"   formControlName="weightUnitOfMeasure" >
+                                                                        <ion-option value="Kg">Kg</ion-option>
+                                                                        <ion-option value="Lb">Lb</ion-option>
+                                                                      </ion-select>
+                                                                </ion-item>
+                                                            </ion-col>
+                                                        </ion-row>
+
+
+                                                        <div text-center  style="margin-top: -26px;">
+                                                                <button  style="margin-top: 39px;"  color="danger"  class="submit-btn" ion-button  (click)="backpage(false)" >Cancel</button>
+                                                              
+                                                                <button  style="margin-top: 39px;"  color="primary"  class="submit-btn" ion-button  [disabled]="!user.valid"  >Confirm</button>
+                                                              </div>
+
+                                                        </form>
+                                   
+                 
+                  </div>
+         
+
+         <!-- </form> -->
+
+        
+
+        
+    
+
+</ion-content>

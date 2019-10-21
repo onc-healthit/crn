@@ -1,0 +1,115 @@
+<ion-header class="headercalss">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+     
+        <img class="logoinproduct"  style="height: 38px;" src="assets/imgs/logo2.png"  float-right  >
+      
+     
+    </ion-navbar>
+  </ion-header>
+
+<ion-content padding>
+
+
+    <ion-searchbar style="margin-top: 14px;margin-bottom: 11px;" [(ngModel)]="searchText"></ion-searchbar>
+
+    <ion-item color="primary">
+        <ion-grid>
+          <ion-row>
+            <ion-col col-4>
+              Title
+            </ion-col>
+            <ion-col col-3>
+              Patient Name
+            </ion-col>
+            <ion-col col-3>
+               Date
+              </ion-col>
+              <!-- <ion-col col-2>
+                Status
+               </ion-col> -->
+              <ion-col col-2>
+                 Actions
+                 </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+
+
+      <ion-list>
+
+          <p *ngIf="errormessage" style="text-align: center;margin-top: 50px;font-size: 28px;"> There is no  submitted forms to display</p>
+          <ion-item  *ngFor="let item of displayforms | searchFilter: searchText">
+            <ion-grid>
+              <ion-row >
+                <ion-col col-3 >
+                  <div class="itemclass" id="qetitle" text-wrap>{{item.title}}</div>
+                </ion-col>
+                <ion-col col-3 >
+                  <div  class="itemclass" id="qetitle" text-wrap>{{item.patientname}}</div>
+                </ion-col>
+                <ion-col col-3 >
+                    <div class="itemclass" id="qetitle" text-wrap>{{item.meta.lastUpdated | date:"yyyy-MM-dd HH:mm"}}</div>
+                  </ion-col>
+                  <!-- <ion-col col-2>
+                    <div class="itemclass" id="qetitle" text-wrap>{{item.status}}</div>
+                  </ion-col> -->
+                <ion-col col-1 style="margin-right: 10px;">
+                  <div class="itemclass" id="qetitle" *ngIf="item?.status == 'in-progress'">
+
+                      <div text-center >
+                      
+                                <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 26px;margin-left: 9px; color: #488aff;" (click)="displayFormdata(item, 'edit')" ></i>
+          
+
+                        
+                        <!-- <ion-icon name="more" (click)="presentPopover(item)"></ion-icon> -->
+                        <!-- <button ion-button icon-only (click)="presentPopover($event)">
+                          <ion-icon name="more"></ion-icon>
+                        </button> -->
+                        
+                        <!-- <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 26px;" (click)="editFormdata(item)"></i> -->
+                         
+                      <!-- <i class="fa fa-pencil-square-o" aria-hidden="true"></i> -->
+                          <!-- <button  color="primary" style="width: 40px;height: 23px;margin-top: -3px;background-color: #0cd1e8;"  class="submit-btn" ion-button   ><i class="fa fa-pencil-square-o" aria-hidden="true" (click)="editFormdata(item)"></i></button> -->
+                          <!-- <button    style="width: 40px;height: 23px;margin-top: -3px; margin-left: -1px;  background-color: #0cd1e8;"  class="submit-btn" ion-button  (click)="displayFormdata(item)"   ><ion-icon name="eye"></ion-icon></button> -->
+                            <!-- <p><span style="color: #0cd1e8;margin-right: 6px;" (click)="editFormdata(item)">Update</span> <span style="color: #10dc60;" (click)="displayFormdata(item)">View</span></p> -->
+                          <!-- <p>View</p> -->
+                            
+                        </div>
+
+                  </div>
+                </ion-col>
+                <ion-col col-1>
+                  <div class="itemclass" id="qetitle">
+                    <div text-center>
+                        <i class="fa fa-eye" aria-hidden="true" style="font-size: 26px;margin-left: 9px; color: #488aff;" (click)="displayFormdata(item, 'view')" ></i>
+                    </div>
+                      
+                  </div>
+                </ion-col>
+              </ion-row>
+              <!-- <ion-col col-12>
+                  <button  color="primary" style="width: 40px;height: 23px;margin-top: -3px;background-color: #0cd1e8;"  class="submit-btn" ion-button   ><i class="fa fa-pencil-square-o" aria-hidden="true" (click)="editFormdata(item)"></i></button>
+                  <button    style="width: 40px;height: 23px;margin-top: -3px; margin-left: -1px;  background-color: #10dc60;"  class="submit-btn" ion-button  (click)="displayFormdata(item)"   ><ion-icon name="eye"></ion-icon></button>
+                 <p><span style="color: #0cd1e8;margin-right: 6px;" (click)="editFormdata(item)">Update</span> <span style="color: #10dc60;" (click)="displayFormdata(item)">View</span></p>
+                </ion-col> -->
+            </ion-grid>
+          </ion-item>
+        </ion-list>
+
+
+    <!-- <ion-list>
+
+        <ion-item   *ngFor="let item of displayforms"    (click)="displayFormdata(item)">
+          
+      <p  text-wrap  >{{item.title}}</p>
+     
+      <span  class="fa fa-angle-right" style="font-size:25px; color: black;"  item-end   ></span>
+    
+    </ion-item>
+          </ion-list> -->
+          <p style="text-align: -webkit-center;color: red;font-size: 25px; margin-top: 44px;" *ngIf="NodataFound"> No Results Found</p>
+</ion-content>

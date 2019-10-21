@@ -1,0 +1,228 @@
+<ion-header class="headercalss">
+  <ion-navbar>
+   
+      <img class="logoinproduct"  style="height: 38px;" src="assets/imgs/augs.png"  float-right  >
+  
+  </ion-navbar>
+
+  
+
+</ion-header>
+
+<ion-content padding>
+
+    <!-- <ion-toolbar no-border-top>
+        <ion-segment  [(ngModel)]="groupName" (ionChange)="segmentChanged($event)">
+          <ion-segment-button *ngFor="let group of groups; let groupIndex  = index" value="{{group.text}}">
+               {{group.text}} 
+          </ion-segment-button>
+        </ion-segment>
+      </ion-toolbar>
+
+
+      <div [ngSwitch]="groupName">
+
+
+          <ion-list>
+              <ion-item  *ngFor="let q of questionsarray; let queindex  = index">
+
+                  <ion-grid item-content>
+                      <ion-row >
+                        <ion-col col-2 style="margin-top: auto;margin-bottom: auto;">
+                            <div  class="itemclass itemlinkIdclass1" id="qetitle" style="margin-left: 5px;font-size: 13px;display: -webkit-inline-box;">
+                            {{q.linkId}}
+                            </div>
+                       </ion-col>
+                       <ion-col  ion-item col-10>
+                          
+                        <ion-label floating style="text-align: -webkit-left;color: cornflowerblue;font-size: 14px;" text-wrap> {{q.text}} 
+                         
+                        </ion-label>
+                    <ion-input></ion-input>
+                     </ion-col>
+                       </ion-row>  
+                       </ion-grid> 
+
+
+              </ion-item>
+          </ion-list>
+      </div> -->
+
+       <!-- <div *ngFor="let group of groups; let groupIndex  = index">
+      <h2   (click)="toggleAccordion(group)">
+          {{group.text}} 
+           <span *ngIf ="group.isMenuOpen == true">&#9650;</span>
+           <span *ngIf="group.isMenuOpen == false">&#9660;</span>
+        </h2>
+
+        <div
+        [ngClass]="this.isMenuOpen ? 'active' : 'inactive'">
+        <section class="image-wrapper">
+            <img [src]="image">
+        </section>
+        <p> description </p>
+        <ion-button
+           type="button"
+           color="primary"
+           fill="solid"
+           size="default"
+           (click)="broadcastName(group)">Console log me!</ion-button>
+     </div>
+
+      </div> -->
+
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- 
+        <ion-list  *ngFor="let group of groups; let groupIndex  = index" class="accordion-list" line="none" no-padding> 
+
+          <ion-item tappable (click)="toggleAccordion(group)" [ngclass]="{'section.avtive': group.isMenuOpen,section:!group.isMenuOpen}">
+              <h2 >
+                  <p style="text-align: -webkit-auto;font-weight: 600;font-size: 17px;">{{group.text}} </p>
+                   <span *ngIf ="group.isMenuOpen == true">&#9650;</span>
+                   <span *ngIf="group.isMenuOpen == false">&#9660;</span>
+                </h2>
+  
+          </ion-item>
+
+           
+           <div *ngIf="group.item && group.isMenuOpen">
+                
+             <ion-list *ngFor="let q of group.diplayQuestions; let j = index" lines="none" class="child-list">
+
+               <ion-item >
+
+                  <ion-grid item-content>
+                      <ion-row >
+                        <ion-col col-2 style="margin-top: auto;margin-bottom: auto;">
+                            <div  class="itemclass itemlinkIdclass1" id="qetitle" style="margin-left: 5px;font-size: 13px;display: -webkit-inline-box;">
+                            {{q.linkId}}
+                            </div>
+                       </ion-col>
+                       <ion-col  ion-item col-10>
+                          
+                        <ion-label floating style="text-align: -webkit-left;color: cornflowerblue;font-size: 14px;" text-wrap> {{q.text}} 
+                         
+                        </ion-label>
+                    <ion-input></ion-input>
+                     </ion-col>
+                       </ion-row>  
+                       
+                       </ion-grid> 
+
+               </ion-item>
+
+             </ion-list>
+
+             <div text-center margin-top>         
+              <button    color="primary"   class="submit-btn" ion-button  (click)="back()" >Back </button>
+             <button    color="primary"   class="submit-btn" ion-button  (click)="next(group)" >Next </button>
+             </div>
+
+           </div>
+
+        </ion-list> -->
+
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+<!-- <ion-slides #slides class="slides-container">
+    <ion-slide class="slide-page-one">
+      hsdbfjkdb
+    </ion-slide>
+    <ion-slide class="slide-page-two">
+      SDHFBDJKSDF
+    </ion-slide>
+    <button type="submit" ion-button color="light" class="swiper-button-prev swiper-button-black" (click)="prevSlide()"></button>
+    <button type="submit" ion-button color="light" class="swiper-button-next swiper-button-black" (click)="nextSlide()"></button>
+  </ion-slides> -->
+
+
+  
+
+
+  <ion-grid class="grid">
+      <ion-row>
+          <ion-slides  #slides initialSlide=0 speed="300" loop="false"  >
+              <ion-slide *ngFor="let group of groups; let groupIndex  = index" >
+                  {{group.text}}
+                  <!-- <ion-segment>
+                  <ion-segment-button >
+                      {{group.text}}
+                  </ion-segment>
+                </ion-segment> -->
+                  <!-- <ion-segment  [(ngModel)]="groupName" (ionChange)="segmentChanged($event)">
+                      <ion-segment-button *ngFor="let group of groups; let groupIndex  = index" value="{{group.text}}">
+                           {{group.text}} 
+                      </ion-segment-button>
+                    </ion-segment>    -->
+              </ion-slide>
+              
+          </ion-slides>
+      </ion-row>
+    </ion-grid>
+
+
+
+
+  <div class="accordion" id="accordionExample">
+      <div class="card" *ngFor="let group of groups; let i = index" style="background-color: rgba(119, 119, 119, 0.26);color: black;margin-bottom: 12px;">
+        <div class="card-header" id="headingOne">
+          <div   data-toggle="collapse" [attr.data-target]="'#collapseOne' + i" aria-expanded="true" aria-controls="collapseOne">
+              <p style="text-align: -webkit-center;font-weight: 600;font-size: 17px;">{{group.text}} </p>
+          </div>
+          
+        </div>
+    
+        <div [attr.id]="'collapseOne' + i" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+          <div class="card-body" *ngFor="let q of group.diplayQuestions; let j = index">
+              <ion-item >
+
+                  <ion-grid item-content>
+                      <ion-row  >
+                        <ion-col col-2 style="margin-top: auto;margin-bottom: auto;">
+                            <div  class="itemclass itemlinkIdclass1" id="qetitle" style="margin-left: 5px;font-size: 13px;display: -webkit-inline-box;">
+                            {{q.linkId}}
+                            </div>
+                       </ion-col>
+                       <ion-col  ion-item col-10>
+                          
+                        <ion-label floating style="text-align: -webkit-left;color: cornflowerblue;font-size: 14px;" text-wrap> {{q.text}} 
+                         
+                        </ion-label>
+                    <ion-input></ion-input>
+                     </ion-col>
+                       </ion-row>  
+                       
+                       </ion-grid> 
+  
+               </ion-item>
+          </div>
+          <div text-center margin-top style="margin-top: 5px;margin-bottom: 16px;">         
+              <!-- <button    color="primary"   class="submit-btn" ion-button  (click)="back(group)" >Back </button> -->
+             <button    color="primary"   class="submit-btn" ion-button [disabled]="loadmoredisabale" (click)="next(group)" > Load More </button>
+             </div>
+        </div>
+      </div> 
+    </div>
+
+
+    <div>
+      <ng-template #dynamicQuestions></ng-template>
+    </div>
+
+
+       <!-- <div
+            [ngClass]="this.isMenuOpen ? 'active' : 'inactive'">
+            <section class="image-wrapper">
+   	  <img [src]="image">
+   </section>
+   <p>description</p>
+   <ion-button
+      type="button"
+      color="primary"
+      fill="solid"
+      size="default"
+      (click)="broadcastName(name)">Console log me!</ion-button>
+</div> -->
+
+</ion-content>
