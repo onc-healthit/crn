@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # fhir-R4
 Welcome to FHIR R4 sample project
 
@@ -68,7 +68,4 @@ POST APIS:
 ```
 
 
-  
-=======
-# Xyram
->>>>>>> fde5cfb155f931dee022b7d66e0138fa303204b7
+
