@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # fhir-R4
 Welcome to FHIR R4 sample project
 
