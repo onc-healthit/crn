@@ -86,4 +86,12 @@ export class QuestionaryService {
             .map((data: Response)=> data.json()|| {})
            // .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
     }
+
+    getPatientResource(patientId) {
+        const headers = new Headers();
+        return this.http.get(this.constService.base_url+'fhir/Patient?_id='+patientId, {
+            headers: headers
+        }) 
+            .map((data: Response)=> data.json()|| {})
+    }
 }

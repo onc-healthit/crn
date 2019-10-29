@@ -1,0 +1,56 @@
+<div class="">
+  <div class="text-center">
+    <P class="font-weight-bold ralewayB">{{type}}</P>
+  </div>
+
+  <div>
+
+      <div class="card mb-1" *ngFor="let item of patientdetails; let i  = index">
+          <div class="card-header bg-white p-0 shadow bg-white rounded" style="cursor: pointer;">
+            <li class="list-group-item m-0" style="border-radius: 0px;" (click)="toggleAccordion(item)">
+              <div class="row">
+                <div class="col-11 ralewaySB">
+                    {{item?.fullUrl}}
+                </div>
+                <div class="col-1 text-right">
+                    <span class="">
+                        <i class="fa fa-angle-down blue-color" *ngIf="!item?.isShowQuestions" aria-hidden="true"
+                        style="cursor: pointer; font-size: 18px; margin: 0 15px;"></i>
+                        <i class="fa fa-angle-up blue-color" *ngIf="item?.isShowQuestions" aria-hidden="true"
+                        style="cursor: pointer; font-size: 18px; margin: 0 15px;"></i>
+                      </span>
+                </div>
+              </div>
+                
+            </li >
+          </div>
+          <div class="card-body bgGrayColor stuck ralewaySB p-0" *ngIf="item?.isShowQuestions">
+              <pre class="prePadding white-font">
+                {{item?.resource | json}}
+              </pre>
+          </div>
+        </div>
+
+
+    <!-- <div class="accordion" >
+        <div class="card"  *ngFor="let item of patientdetails; let i  = index">
+            <div class="card-header " id="headingOne">
+                <li  (click)="toggleAccordion(item)">
+                     <p text-wrap>{{item?.resource?.questionnaire}}</p>
+                </li>
+            </div>
+            <div class="card-body" *ngIf="item?.isShowQuestions">
+              <div>
+                  <p *ngIf="!item?.children" style="text-align: -webkit-center;color: red;font-size: 18px;"> 
+                      coming soon</p>
+              </div>
+              <div *ngIf="item?.children">
+                <div *ngFor="let questions of item.children"   (click)="displayQuestions(questions,item)" >
+                      <p style="text-align: -webkit-center;font-size: 18px;color: #008E9B;font-weight: 500;" text-wrap>  {{questions.resource.title}}</p>
+              </div>
+            </div>
+             </div>
+        </div>
+    </div> -->
+  </div>
+</div>

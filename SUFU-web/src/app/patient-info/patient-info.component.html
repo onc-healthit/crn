@@ -1,0 +1,37 @@
+<app-header></app-header>
+<div class="container-fluid bg-light pt-4">
+  <div class="list-group-item mb-2 shadow mb-5 bg-white">
+    <div class="row">
+        <div class="col-6 col-md-4 ralewayB">
+          <p><strong>Patient Name: </strong>{{patientDetails?.firstname}}</p>
+        </div>
+        <div class="col-6 col-md-4">
+
+        </div>
+        <div class="col-6 col-md-4">
+
+        </div>
+    </div>
+  </div>
+  <div *ngIf="patientResourceByGroup" class="row container-fluid bodyHeight">
+    <div class="col-4">
+        <nav class="shadow mb-5 bg-white rounded">
+            <div class="list-group components">
+              <button type="button" *ngFor="let type of patientResourceKey" (click)="onSelectType(type, patientResourceByGroup[type])"
+              class="list-group-item list-group-item-action ralewayReg">
+                {{type}}
+              </button>
+
+            </div>
+        </nav>
+    </div>
+    <div class="col-8 shadow mb-5 bg-white rounded ">
+      <app-details [patientdetails]="selectedData" [type]="selectedType" ></app-details>
+    </div>
+  </div>
+  <div *ngIf="!patientResourceByGroup" class="ralewayB red-font bodyHeight text-center">
+    <p><strong>{{errorMessage}}</strong></p>
+  </div>
+
+</div>
+<app-footer></app-footer>

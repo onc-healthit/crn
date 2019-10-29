@@ -27,6 +27,7 @@ export class QuestionFormPage {
   scaneddata:any={}
   deviceInformation:any;
   public isLoading: boolean = false;
+  patientResources:any;
   isFrom:any;
   @ViewChild('myFormContainer') myFormContainer;
   constructor(public navCtrl: NavController, 
@@ -132,9 +133,10 @@ export class QuestionFormPage {
   ionViewDidEnter() {
     this.PatientDetails = JSON.parse(localStorage.getItem('Patientdetails'));
     this.PersonDetails = JSON.parse(localStorage.getItem('LoginDetails'));
-    if(this.PatientDetails && this.isFrom == 'newForm') {
-      this.populatePatientDetails(this.questions);
+    if(this.PatientDetails) {
+      this.getResourceByPatient(this.PatientDetails['patient'].PatentId);
     }
+
   }
 
   ionViewDidLoad() {
@@ -158,6 +160,12 @@ export class QuestionFormPage {
     if(this.form.valid) {
       this.submitFormAPIcall(action);
     } else {
+      let toast = this.toasatCtrl.create({
+        message: 'Please fill all mandatory fields',
+        duration: 2000,
+        // position: 'top'
+      });
+      toast.present();
     }
   }
 
@@ -196,6 +204,88 @@ export class QuestionFormPage {
           this.form.controls[questionData.linkId].disable();
           this.form.controls[questionData.linkId].updateValueAndValidity();
         }
+
+        if(this.questionObject.resource.id == '5') {
+          if(this.patientResourceKey.includes('Observation')) {
+            console.log('Observation', this.patientResources['Observation']);
+            if(questionData.text == 'Height (in inches)') {
+              this.form.controls[questionData.linkId].setValue(this.patientResources['Observation'][0].resource.valueQuantity.value);
+            }
+            if(questionData.text == 'Weight (in pounds)') {
+              this.form.controls[questionData.linkId].setValue(this.patientResources['Observation'][1].resource.valueQuantity.value);
+            }
+          } else {
+            if(questionData.text == 'Height (in inches)') {
+              this.form.controls[questionData.linkId].setValue(null);
+            }
+            if(questionData.text == 'Weight (in pounds)') {
+              this.form.controls[questionData.linkId].setValue(null);
+            }
+          }
+          if(this.patientResourceKey.includes('Condition')) {
+            console.log('Condition', this.patientResources['Condition']);
+            if(questionData.text == 'What is the diagnosis?') {
+              let populateObject = this.patientResources['Condition'][0].resource.code.coding[0]
+              this.form.controls[questionData.linkId].setValue(populateObject.display + '@@' + populateObject.code);
+              this.form.controls[questionData.linkId].updateValueAndValidity();
+            }
+          } else {
+            if(questionData.text == 'What is the diagnosis?') {
+              this.form.controls[questionData.linkId].setValue(null);
+              this.form.controls[questionData.linkId].updateValueAndValidity();
+            }
+          }
+        }
+
+        if(this.questionObject.resource.id == '6') {
+          if(this.patientResourceKey.includes('Procedure')) {
+            console.log('Procedure', this.patientResources['Procedure']);
+            if(questionData.text == 'Type of incontinence procedure performed') {
+              let populateObject = this.patientResources['Procedure'][0].resource.code.coding[0]
+              this.form.controls[questionData.linkId].setValue(populateObject.display + '@@' + populateObject.code);
+              this.form.controls[questionData.linkId].updateValueAndValidity();
+              this.onCallFunction(questionData, '', '')
+            }
+          } else {
+            if(questionData.text == 'Type of incontinence procedure performed') {
+              this.form.controls[questionData.linkId].setValue(null);
+              this.form.controls[questionData.linkId].updateValueAndValidity();
+              this.onCallFunction(questionData, '', '')
+            }
+          }
+          if(this.patientResourceKey.includes('Device')) {
+            if(questionData.text == 'UDI (numbers only, max 14 digits)') {
+              this.form.controls[questionData.linkId].setValue(this.patientResources['Device'][0].resource.udiCarrier[0].deviceIdentifier);
+              this.deviceinfo(this.form.value[questionData.linkId]);
+            }
+          } else {
+            if(questionData.text == 'UDI (numbers only, max 14 digits)') {
+              this.form.controls[questionData.linkId].setValue(null);
+              this.deviceInformation = null;
+              this.hideAllSubgroup(this.questions, 'fillData');
+            }
+          }
+        }
+
+        if(this.questionObject.resource.id == '8') {
+          if(this.patientResourceKey.includes('Encounter')) {
+            console.log('Observation', this.patientResources['Encounter']);
+            if(questionData.text == 'What is the reason for this visit? Briefly describe') {
+              this.form.controls[questionData.linkId].setValue(this.patientResources['Encounter'][0].resource.type[0].coding[0].display);
+            }
+            if(questionData.text == 'Date of visit') {
+              this.form.controls[questionData.linkId].setValue(this.patientResources['Encounter'][1].resource.meta.lastUpdated);
+            }
+          } else {
+            if(questionData.text == 'What is the reason for this visit? Briefly describe') {
+              this.form.controls[questionData.linkId].setValue(null);
+            }
+            if(questionData.text == 'Date of visit') {
+              this.form.controls[questionData.linkId].setValue(null);
+            }
+          }
+        }
+
       }
   
     if(questionData.type == 'group') {
@@ -298,6 +388,22 @@ export class QuestionFormPage {
                     questionData.isShowNow = true;
                     this.form.controls[questionData.linkId].setValidators(this.getValidators(questionData));
                     this.form.controls[questionData.linkId].updateValueAndValidity();
+                    if(this.PatientDetails && this.isFrom == 'newForm') {
+                      if(this.questionObject.resource.id == '6') {
+                        if(this.patientResourceKey.includes('Device')) {
+                          if(questionData.text == 'UDI (numbers only, max 14 digits)') {
+                            this.form.controls[questionData.linkId].setValue(this.patientResources['Device'][0].resource.udiCarrier[0].deviceIdentifier);
+                            this.deviceinfo(this.form.value[questionData.linkId]);
+                          }
+                        } else {
+                          if(questionData.text == 'UDI (numbers only, max 14 digits)') {
+                            this.form.controls[questionData.linkId].setValue(null);
+                            this.deviceInformation = null;
+                            this.hideAllSubgroup(this.questions, 'fillData');
+                          }
+                        }
+                      }
+                    }
                     break;
               } else {
                 questionData.isShowNow = false;
@@ -817,8 +923,40 @@ export class QuestionFormPage {
     return questionJson;
   }
 
-  prepareAnswerObject(questions, form) {
+  patientResourceKey:any = [];
+  getResourceByPatient(patientId) {
+    this.QuestionaryService.getPatientResource(patientId).subscribe(data => {
+      this.patientResourceKey = [];
+      this.patientResources = undefined;
+      if(data && data.hasOwnProperty('entry')) {
+        let temp =  data.entry.reduce(function (r, a) {
+          r[a.resource.resourceType] = r[a.resource.resourceType] || [];
+          r[a.resource.resourceType].push(a);
+          return r;
+        }, Object.create(null));
+        this.patientResources = temp;
+        console.log('getPatientResource', this.patientResources);
+        this.patientResourceKey = Object.keys(this.patientResources);
+        // for(let item of this.patientResourceKey) {
+        //   this.patientResources[item] = this.patientResources[item].reverse();
+        // }
+        // console.log('getPatientResource 2', this.patientResources);
+      }
+      if(this.PatientDetails && this.isFrom == 'newForm') {
+        this.populatePatientDetails(this.questions);
+      }
+    }, error => {
+      console.log('getPatientResource error', error);
+    })
+  }
 
+
+  populateData(item) {
+    for(let item of this.patientResourceKey) {
+      if(item == 'Observation') {
+
+      }
+    }
   }
 
 }

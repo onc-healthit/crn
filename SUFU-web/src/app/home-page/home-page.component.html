@@ -1,0 +1,39 @@
+<app-header></app-header>
+
+<div class="container-fluid bg-light mt-4">
+    <div class="form-group">
+        <input class="form-control bg-white border border-secondary rounded ralewayReg" matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </div>
+      
+      
+      <div class="row">
+          <div class="col-lg-12">
+            <mat-table  #table [dataSource]="patientList" class="query-table mat-elevation-z8" matSort>
+                <ng-container matColumnDef="ID">
+                  <mat-header-cell class="bgBlueColor ralewayB" *matHeaderCellDef mat-sort-header> PatentId </mat-header-cell>
+                  <mat-cell *matCellDef="let element" class="ralewayReg"> {{element?.PatentId}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="Firstname">
+                  <mat-header-cell class="bgBlueColor ralewayB" *matHeaderCellDef mat-sort-header> First name </mat-header-cell>
+                  <mat-cell *matCellDef="let element" class="ralewayReg"> {{element?.firstname}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="Lastname">
+                  <mat-header-cell class="bgBlueColor ralewayB" *matHeaderCellDef mat-sort-header> Last name </mat-header-cell>
+                  <mat-cell *matCellDef="let element" class="ralewayReg"> {{element?.lastname}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="DOB">
+                  <mat-header-cell class="bgBlueColor ralewayB" *matHeaderCellDef mat-sort-header> DOB </mat-header-cell>
+                  <mat-cell *matCellDef="let element" class="ralewayReg"> {{element?.birthDate | date}} </mat-cell>
+                </ng-container>
+
+                <!---         -->
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showDetails(row)" style="cursor: pointer"></mat-row>
+
+            </mat-table>
+            <mat-paginator class="bgBlueColor ralewayReg" [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+
+          </div>
+        </div>
+</div>
+<app-footer></app-footer>

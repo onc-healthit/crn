@@ -1,0 +1,49 @@
+<div class="container wrapper">
+    <br> <br> <br>
+    <div class="row">
+        <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header ralewayB font-24 text-center"> 
+            Login
+          </div>
+          <div class="card-body white-bg">
+              <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                  <div class="form-group">
+                    <label class="col-form-label">Email</label>
+                    <input pInputText name="userID" type="userID" class="form-control" autocomplete="username" maxlength="50"
+                      formControlName="userID">
+                    <div class="ui-message ui-messages-error ui-corner-all" *ngIf="loginForm.controls['userID'].invalid && loginForm.controls['userID'].dirty">
+                        <span *ngIf="loginForm.controls['userID'].errors.validateEmail">Enter valid email</span>
+                      <span *ngIf="loginForm.controls['userID'].errors.required">Email ID is required</span>
+                      <span *ngIf="loginForm.controls['userID'].errors.pattern && !loginForm.controls['userID'].errors.maxlength && !loginForm.controls['userID'].errors.minlength">Email ID is invalid</span>
+                      <span *ngIf="loginForm.controls['userID'].errors.maxlength">Email ID is too long</span>
+                      <span *ngIf="loginForm.controls['userID'].errors.minlength">Email ID is too short</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-form-label">Password</label>
+                    <input pInputText type="password" class="form-control" maxlength="30" autocomplete="current-password"
+                      formControlName="password">
+                    <div class="ui-message ui-messages-error ui-corner-all" *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].dirty">
+                      <span *ngIf="loginForm.controls['password'].errors.required">Password is required</span>
+                      <span *ngIf="loginForm.controls['password'].errors.maxlength">Password is too long</span>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <!-- <a (click)="goToForgotPassword()" class="text-primary pull-left m-1"></a> -->
+                    </div>
+                    <div class="col">
+                      <button class="btn btn-primary pull-right" type="submit">Sign in</button>
+                    </div>
+                  </div>
+                </form>
+          </div>
+  
+        </div>
+          
+      </div>
+      <div class="col-md-8"></div>
+    </div>
+  </div>

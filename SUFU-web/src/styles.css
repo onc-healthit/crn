@@ -1,0 +1,62 @@
+/* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+@font-face {
+    font-family: RalewayBold;
+    src: url('./assets/font/Raleway-Bold.ttf');
+}
+@font-face {
+    font-family: RalewayLight;
+    src: url('./assets/font/Raleway-Light.ttf');
+}
+@font-face {
+    font-family: RalewayRegular;
+    src: url('./assets/font/Raleway-Regular.ttf');
+}
+@font-face {
+    font-family: RalewaySemiBold;
+    src: url('./assets/font/Raleway-SemiBold.ttf');
+}
+
+.ralewayB {
+    font-family: RalewayBold;
+}
+
+.ralewayL {
+    font-family: RalewayLight;
+}
+
+.ralewayReg {
+    font-family: RalewayRegular;
+}
+
+.ralewaySB {
+    font-family: RalewaySemiBold;
+}
+
+.gray-font { 
+    color:gray;
+}
+
+.white-font {
+    color: white;
+}
+
+.red-font {
+    color: red;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.bgBlueColor {
+    background: #488aff;
+}
+
+.bgGrayColor {
+    background: gray;
+}
+
+.blue-color {
+    color: #488aff;
+}
