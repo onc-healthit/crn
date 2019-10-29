@@ -68,7 +68,4 @@ POST APIS:
 ```
 
 
-  
-=======
-# Xyram
->>>>>>> fde5cfb155f931dee022b7d66e0138fa303204b7
+
