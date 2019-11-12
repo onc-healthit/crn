@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController,LoadingController } from 'ionic-angular';
+import { NavController,LoadingController, Events } from 'ionic-angular';
 import {ContactService} from '../contact/contact.service'
+import { Storage } from '@ionic/storage';
+import { SmartOnFhire } from '../../services/smartonfhire.service';
 
 @Component({
   selector: 'page-contact',
@@ -17,7 +19,12 @@ export class ContactPage {
   loader:any
 
   NodataFound:boolean=false
-  constructor(public navCtrl: NavController,public contactService:ContactService,public loadingCtrl:LoadingController) {
+  constructor(public navCtrl: NavController,
+    public contactService:ContactService,
+    public loadingCtrl:LoadingController,
+    public storage: Storage,
+    private smartFhirService: SmartOnFhire,
+    private event: Events) {
 
     //console.log("sdkjsdfjas")
     console.log(this.patientlist)
@@ -33,8 +40,12 @@ export class ContactPage {
       content: 'please wait..'
   })
   this.loader.present();
-
-    this.getpatient()
+  this.storage.get('isFrom').then(data => {
+    if(data != 'launcher') {
+      this.getpatient();
+    }
+  })
+    
   }
 
 
@@ -42,7 +53,7 @@ export class ContactPage {
 
   getpatient(){
 
-  this.contactService.getPatient().subscribe(data=>{
+  this.smartFhirService.getListOfPatientFromFhir().subscribe(data=>{
     console.log(data)
 
     // data.sort(function (obj1, obj2) {
@@ -72,6 +83,8 @@ export class ContactPage {
   }else{
     this.loader.dismiss();
   }
+  }, error => {
+    this.event.publish('logout');
   })
 
 

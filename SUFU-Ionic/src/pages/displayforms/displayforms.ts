@@ -331,7 +331,14 @@ export class DisplayformsPage {
 
   getPatientDetails() {
     for(let item of this.displayforms) {
-      this.getPatientDetailsById(item);
+      if(item.subject.hasOwnProperty('extension')) {
+        for(let ext of item.subject.extension) {
+          if(ext.url.includes('questionnaireresponse-author')) {
+            item['patientname'] = ext.valueString;
+          }
+        }
+      }
+      // this.getPatientDetailsById(item);
     }
   }
 

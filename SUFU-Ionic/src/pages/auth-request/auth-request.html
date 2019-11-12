@@ -1,0 +1,65 @@
+<ion-content padding class="login login-content">
+  <div style="padding: 16px; ">
+    <div class="logo">
+      <p> Authenticate with EHR</p>
+    </div>
+    <!-- <img class="logo" id="logo" src="assets/imgs/logo2.png" style="margin-top: 130px;"> -->
+
+    <form [formGroup]="authRequestForm" (ngSubmit)="onAuthineticate()">
+      <!-- <ion-row>
+        <ion-col col-12>
+          <ion-item>
+            <ion-label style="font-size: 100%;font-weight: 500;min-width: 100px;text-align: left;">LAUNCH URL : </ion-label>
+            <ion-input formControlName="appurl" type="text" placeholder="YOUR APP'S LAUNCH URL"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row> -->
+
+      <ion-row>
+        <ion-col col-12>
+          <ion-item>
+            <ion-label style="font-size: 100%;font-weight: 500;min-width: 100px;text-align: left;">FHIR URL : </ion-label>
+            <ion-input formControlName="fhirUrl" type="text" placeholder="FHIR URL"></ion-input>
+          </ion-item>
+          <div *ngIf="fhirUrl.invalid && fhirUrl.dirty">
+            <p class="errorClass fontsize" *ngIf="fhirUrl.errors.required" style="color:red;">
+              This field should not be empty
+            </p>
+          </div>
+        </ion-col>
+      </ion-row>
+      
+
+
+      <ion-row>
+        <ion-col col-12>
+          <ion-item>
+            <ion-label style="font-size: 100%;font-weight: 500;min-width: 100px;text-align: left;">CLIENT ID :
+            </ion-label>
+            <ion-input formControlName="clientID" type="text" placeholder="Client ID"></ion-input>
+          </ion-item>
+          <div *ngIf="clientID.invalid && clientID.dirty">
+            <p class="errorClass fontsize" *ngIf="clientID.errors.required" style="color:red;">
+              This field should not be empty
+            </p>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <div text-center margin-top>
+
+        <!-- <button color="primary" style="background-color: #05668c;" class="login-btn" ion-button [disabled]="!loginForm.valid">Login</button> -->
+        <button ion-button class="submit-btn" type="submit" [disabled]="!authRequestForm.valid">Submit
+          <!-- <ion-spinner
+            *ngIf="isLoading" name="crescent" style="margin-left: 10px;"></ion-spinner> -->
+          </button>
+  
+      </div>
+
+      <!--button-->
+
+
+    </form>
+
+  </div>
+</ion-content>

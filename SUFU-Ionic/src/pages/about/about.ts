@@ -1,5 +1,5 @@
 import { Component,OnDestroy } from '@angular/core';
-import { NavController,LoadingController } from 'ionic-angular';
+import { NavController,LoadingController, Events } from 'ionic-angular';
 import {AboutService} from './about.service'
 import {QuestionnariesService} from '../questionnaries/questionnaries.service'
 import { Subscription } from 'rxjs/Subscription';
@@ -8,12 +8,14 @@ import 'rxjs/add/observable/timer';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { QuestionFormPage } from '../question-form/question-form';
 import { CustomValidators } from '../../validators/customValidators';
+import { SmartOnFhire } from '../../services/smartonfhire.service';
+import { Storage } from '@ionic/storage';
 
 
 @Component({
   selector: 'page-about',
   templateUrl: 'about.html',
-  providers:[AboutService,QuestionnariesService]
+  providers:[AboutService,QuestionnariesService, SmartOnFhire]
 })
 export class AboutPage implements  OnDestroy {
 
@@ -32,7 +34,10 @@ export class AboutPage implements  OnDestroy {
   constructor(public navCtrl: NavController,
     public aboutService:AboutService,
     public loadingCtrl: LoadingController, 
-    public questionnariesService:QuestionnariesService) {
+    public questionnariesService:QuestionnariesService,
+    public smartService: SmartOnFhire,
+    private storage: Storage,
+    private event: Events) {
       this.questionForm = new FormGroup({});
     console.log("category")
 
@@ -59,6 +64,11 @@ export class AboutPage implements  OnDestroy {
 
   ionViewDidLoad(){
    console.log('ionViewDidLoad category');
+   this.storage.get('isFrom').then(data => {
+     if(data == 'launcher') {
+      this.getPatientDetailsFromFhire();
+     }
+   })
   }
 
 
@@ -197,6 +207,22 @@ export class AboutPage implements  OnDestroy {
     return this.questionForm;
   }
 
- 
+ getPatientDetailsFromFhire() {
+  this.smartService.getPatientFromFhir().subscribe(data => {
+    data['PatentId'] = data.id
+    data['firstname'] = data.name[0].given[0]
+    data['lastname'] = data.name[0].family
+    data['birthDate'] = data.birthDate
+    data['resource'] = { gender: data.gender } 
+
+    let temp =  {
+      patient: data
+    };
+    localStorage.setItem('Patientdetails', JSON.stringify(temp));
+  }, error => {
+    console.log('patient error', error);
+    this.event.publish('logout');
+  })
+ }
 
 }

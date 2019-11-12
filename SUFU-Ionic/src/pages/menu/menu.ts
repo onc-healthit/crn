@@ -1,5 +1,6 @@
 import { Component,ViewChild  } from '@angular/core';
 import { IonicPage, NavController, NavParams,Nav ,App} from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 //import { AboutPage } from '../about/about';
 //import { ContactPage } from '../contact/contact';
@@ -31,7 +32,10 @@ export class MenuPage {
     //{ title: 'Profile', pageName: 'ProfilePage', icon: 'contacts' },
     // { title: 'Logout', pageName: 'LogoutPage', icon: 'log-out' },
   ];
-  constructor(public navCtrl: NavController, public navParams: NavParams,public app:App) {
+  constructor(public navCtrl: NavController, 
+    public navParams: NavParams,
+    public app:App,
+    private storage: Storage) {
   }
 
   ionViewDidLoad() {
@@ -87,9 +91,12 @@ export class MenuPage {
 
 
   logout(page: PageInterface){
-       
-    //this.nav.setRoot('LoginPage')
+    this.storage.set('fhirURL', null);
+    this.storage.set('isFrom', null);
+    this.storage.set('tokenURL', null);
+    this.storage.set('accessToken', null);
     localStorage.removeItem('Patientdetails');
+    localStorage.removeItem('isFrom');
     localStorage.removeItem('LoginDetails');
     this.app.getRootNav().setRoot('LoginPage');
   }

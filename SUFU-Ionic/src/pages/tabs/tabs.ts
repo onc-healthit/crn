@@ -5,6 +5,7 @@ import { AboutPage } from '../about/about';
 import { ContactPage } from '../contact/contact';
 import { HomePage } from '../home/home';
 import {DisplayformsPage} from '../displayforms/displayforms'
+import { Storage } from '@ionic/storage';
 
 @IonicPage()
 @Component({
@@ -20,9 +21,20 @@ export class TabsPage {
   tab3Root = ContactPage;
   tab4Root = DisplayformsPage;
   myIndex:number
-
-  constructor(public navCtrl: NavController, public navParams: NavParams,public app:App,public viewCtrl: ViewController) {
+  hidePatientTab:boolean = false;
+  constructor(public navCtrl: NavController,  
+    public navParams: NavParams,
+    public app:App,
+    public viewCtrl: ViewController,
+    public storage: Storage,) {
    this.myIndex = navParams.data.tabIndex || 0;
+
+   this.storage.get('isFrom').then(data => {
+     console.log('is from', data);
+     if(data && data == 'launcher') {
+      this.hidePatientTab = true;
+     }
+   })
   }
 
 

@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 //import { HomePage } from '../../pages/home/home';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {LoginService} from '../login/login.service'
+import { SmartOnFhire } from '../../services/smartonfhire.service';
 //import { TabsPage } from '../../pages/tabs/tabs';
 //import { MenuPage } from '../menu/menu';
 
@@ -24,8 +25,11 @@ export class LoginPage {
   displayerrormessage:boolean = false
   public isLoading: boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-    public fb: FormBuilder, public loginservice:LoginService) {
+  constructor(public navCtrl: NavController, 
+    public navParams: NavParams,
+    public fb: FormBuilder, 
+    public loginservice:LoginService,
+    private shartFhirService: SmartOnFhire) {
       // this.loginForm = fb.group({
       //   email: ['test@gmail.com', Validators.required],
       //   password: ['test', Validators.required],

@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { BarcodeScanner, BarcodeScannerOptions } from '@ionic-native/barcode-scanner'
 import { QuestionaryService } from '../questions/questions.service';
 import { CustomValidators } from '../../validators/customValidators';
+import { SmartOnFhire } from '../../services/smartonfhire.service';
 // import { lforms } from 'lforms'
 
 
@@ -35,7 +36,8 @@ export class QuestionFormPage {
     private barcodeScanner: BarcodeScanner,
     private QuestionaryService: QuestionaryService,
     private loadingCtrl: LoadingController, 
-    private toasatCtrl: ToastController) {
+    private toasatCtrl: ToastController,
+    public smartService: SmartOnFhire) {
       this.isFrom = this.navParams.get('isFrom');
       this.barcodeScannerOptions = {
         prompt:'Scan Barcode',
@@ -133,10 +135,19 @@ export class QuestionFormPage {
   ionViewDidEnter() {
     this.PatientDetails = JSON.parse(localStorage.getItem('Patientdetails'));
     this.PersonDetails = JSON.parse(localStorage.getItem('LoginDetails'));
+    console.log('patientdetails', this.PatientDetails);
     if(this.PatientDetails) {
       this.getResourceByPatient(this.PatientDetails['patient'].PatentId);
     }
+    this.getResource();
+  }
 
+  getResource() {
+    this.smartService.getPatientResource().subscribe(data => {
+      console.log('resource', data);
+    }, error => {
+      console.log('resource error', error);
+    })
   }
 
   ionViewDidLoad() {
@@ -196,6 +207,7 @@ export class QuestionFormPage {
           this.form.controls[questionData.linkId].disable();
           this.form.controls[questionData.linkId].updateValueAndValidity();
           break;
+          // case('Gender') : this.form.controls[questionData.linkId].setValue(this.PatientDetails.patient.resource.gender);
           case('Gender') : this.form.controls[questionData.linkId].setValue(this.PatientDetails.patient.resource.gender);
           this.form.controls[questionData.linkId].disable();
           this.form.controls[questionData.linkId].updateValueAndValidity();
@@ -222,6 +234,7 @@ export class QuestionFormPage {
               this.form.controls[questionData.linkId].setValue(null);
             }
           }
+          
           if(this.patientResourceKey.includes('Condition')) {
             console.log('Condition', this.patientResources['Condition']);
             if(questionData.text == 'What is the diagnosis?') {
@@ -801,7 +814,7 @@ export class QuestionFormPage {
       content: 'please wait..'
     })
     loader.present();
-    // let patientName =  this.PatientDetails['patient'].firstname+" "+this.PatientDetails['patient'].lastname;
+    let patientName =  this.PatientDetails['patient'].firstname+" "+this.PatientDetails['patient'].lastname;
     
 
     let patientID = this.PatientDetails['patient'].PatentId;
@@ -809,6 +822,10 @@ export class QuestionFormPage {
     let questionnaireResponse = {
       "questionnaire": "Questionnaire/"+this.Questionnarie.id,
       "subject": {
+        "extension": [{
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaireresponse-author",
+          "valueString": patientName
+          }],
         "reference": "Patient/"+patientID
       },
       "author": {

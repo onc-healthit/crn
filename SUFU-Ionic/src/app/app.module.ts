@@ -16,6 +16,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import {ConstService } from './../providers/constent-service';
 
 import { HttpModule } from '@angular/http';
+import { IonicStorageModule } from '@ionic/storage';
 ///import {TabsPageModule} from '../pages/tabs/tabs.module'
 
 import {LoginPageModule} from '../pages/login/login.module'
@@ -30,6 +31,9 @@ import {GlobalService} from '../providers/global.service'
 import {DynamicQuestionsComponentPage} from '../pages/dynamic-questions-component/dynamic-questions-component'
 import { QuestionFormPageModule } from '../pages/question-form/question-form.module';
 import { QuestionFormTempPageModule } from '../pages/question-form-temp/question-form-temp.module';
+import { SmartOnFhire } from '../services/smartonfhire.service';
+import { DataService } from '../services/data.service';
+import { AuthRequestPageModule } from '../pages/auth-request/auth-request.module';
 //import {GroupQurtionsDisplayPage} from '../pages/group-qurtions-display/group-qurtions-display'
 //import {MatExpansionModule } from '@angular/material';
 
@@ -59,7 +63,9 @@ import { QuestionFormTempPageModule } from '../pages/question-form-temp/question
     DisplayformsPageModule,
     QuestionFormPageModule,
     QuestionFormTempPageModule,
-    IonicModule.forRoot(MyApp)
+    AuthRequestPageModule,
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
     //IonicPageModule.forChild(LoginPage),
     
   ],
@@ -79,6 +85,8 @@ import { QuestionFormTempPageModule } from '../pages/question-form-temp/question
     SplashScreen,
     BarcodeScanner,
     GlobalService,
+    SmartOnFhire,
+    DataService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ConstService
   ],

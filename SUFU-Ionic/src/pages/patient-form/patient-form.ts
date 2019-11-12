@@ -120,7 +120,7 @@ export class PatientFormPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PatientFormPage');
-    console.log(this.patientdata)
+    console.log('patientdata', this.patientdata);
     //console.log(this.patientdata.ethnicity)
     
     //console.log(obj)
@@ -134,22 +134,45 @@ export class PatientFormPage {
       this.gender = this.patientdata.patient.resource.gender
       this.birthDate = this.patientdata.patient.birthDate
       console.log(this.patientdata.patient.resource.extension)
-      for(let i=0; i<this.patientdata.patient.resource.extension.length;i++){
-         if(this.patientdata.patient.resource.extension[i].url == 'http://hl7.org/fhir/StructureDefinition/us-core-race'){
-           for(let j=0;j<this.patientdata.patient.resource.extension[i].valueCodeableConcept.coding.length;j++){
-            this.raceitemarray.push(this.patientdata.patient.resource.extension[i].valueCodeableConcept.coding[j].display) 
+      // for(let i=0; i<this.patientdata.patient.resource.extension.length;i++){
+      //    if(this.patientdata.patient.resource.extension[i].url == 'http://hl7.org/fhir/StructureDefinition/us-core-race'){
+      //      for(let j=0;j<this.patientdata.patient.resource.extension[i].valueCodeableConcept.coding.length;j++){
+      //       this.raceitemarray.push(this.patientdata.patient.resource.extension[i].valueCodeableConcept.coding[j].display) 
+      //      }
+      //    }
+      // }
+
+      for(let item of this.patientdata.patient.resource.extension) {
+        if(item.url.includes('race')) {
+          for(let j=0;j<item.valueCodeableConcept.coding.length;j++){
+            this.raceitemarray.push(item.valueCodeableConcept.coding[j].display)
            }
-         }
+           this.race = this.raceitemarray.join(",")
+        }
+        if(item.url.includes('ethnicity')) {
+          this.ethnicity = item.valueCodeableConcept.coding[0].display
+        }
+        if(item.url.includes('height')) {
+          this.dipslayHeight = item.valueCodeableConcept.coding[0].display
+        }
+        if(item.url.includes('heightUnit')) {
+          this.dipslayHeightUnitofMeasure = item.valueCodeableConcept.coding[0].display
+        }
+        if(item.url.includes('weight')) {
+          this.displayWeight = item.valueCodeableConcept.coding[0].display
+        }
+        if(item.url.includes('weightUnit')) {
+          this.displayWeightUnitofMeasure = item.valueCodeableConcept.coding[0].display
+        }
       }
      
-      this.ethnicity = this.patientdata.patient.resource.extension[1].valueCodeableConcept.coding[0].display
-      this.race = this.raceitemarray.join(",")
-     // console.log(this.race)
-      this.dipslayHeight = this.patientdata.patient.resource.extension[2].valueCodeableConcept.coding[0].display
-      this.dipslayHeightUnitofMeasure = this.patientdata.patient.resource.extension[3].valueCodeableConcept.coding[0].display
-      this.displayWeight = this.patientdata.patient.resource.extension[4].valueCodeableConcept.coding[0].display
-      this.displayWeightUnitofMeasure  = this.patientdata.patient.resource.extension[5].valueCodeableConcept.coding[0].display
-      console.log(this.race)
+      // this.ethnicity = this.patientdata.patient.resource.extension[1].valueCodeableConcept.coding[0].display
+      // this.race = this.raceitemarray.join(",")
+      // this.dipslayHeight = this.patientdata.patient.resource.extension[2].valueCodeableConcept.coding[0].display
+      // this.dipslayHeightUnitofMeasure = this.patientdata.patient.resource.extension[3].valueCodeableConcept.coding[0].display
+      // this.displayWeight = this.patientdata.patient.resource.extension[4].valueCodeableConcept.coding[0].display
+      // this.displayWeightUnitofMeasure  = this.patientdata.patient.resource.extension[5].valueCodeableConcept.coding[0].display
+      // console.log(this.race)
 
       // if(this.patientdata.gender == 'MALE'){
       //   this.BirthSex = "M"
