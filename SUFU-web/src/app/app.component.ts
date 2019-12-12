@@ -16,8 +16,5 @@ export class AppComponent {
     this.loginData = localStorage.getItem('loginData');
     this.isLogin = localStorage.getItem('isLogin');
     this.pageUrl = this.router.url;
-    if(!this.isLogin) {
-      this.router.navigate(['/login']);
-    }
   }
 }

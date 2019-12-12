@@ -1,14 +1,14 @@
 package org.sitenv.spring;
 
+import java.util.Date;
+
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.Device;
 import org.hl7.fhir.r4.model.IdType;
-import org.hl7.fhir.r4.model.Observation;
+import org.hl7.fhir.r4.model.Meta;
 import org.sitenv.spring.configuration.AppConfig;
 import org.sitenv.spring.model.DafDevice;
-import org.sitenv.spring.model.DafObservation;
 import org.sitenv.spring.service.DeviceService;
-import org.sitenv.spring.service.ProcedureService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 
@@ -49,12 +49,19 @@ public class DeviceResourceProvider implements IResourceProvider {
      * This object contains the identity of the created resource.
      * Example URL to invoke this method (this would be invoked using an HTTP POST, 
      * with the resource in the POST body): http://<server name>/<context>/fhir/Device
-     * @param theObservation
+     * @param theDevice
      * @return
      */
     @Create
     public MethodOutcome createDevice(@ResourceParam Device theDevice) {
-    	// Save this observation to the database...
+    	Date date = new Date();
+    	//Set meta 
+		Meta meta = new Meta();
+		meta.setVersionId("1");
+		meta.setLastUpdated(date);
+		theDevice.setMeta(meta);
+		
+    	// Save this device to the database...
     	DafDevice dafDevice = service.createDevice(theDevice);
      
 		MethodOutcome retVal = new MethodOutcome();

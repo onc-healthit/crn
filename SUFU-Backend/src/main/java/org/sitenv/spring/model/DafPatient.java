@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.OrderBy;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
@@ -24,6 +25,7 @@ public class DafPatient {
 	
 	@Id
     @Column(name = "id")
+	@OrderBy(clause = "ASC")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	

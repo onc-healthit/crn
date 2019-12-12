@@ -40,5 +40,4 @@ public final class HapiUtils {
 
         return codeableConcept;
     }
-
 }

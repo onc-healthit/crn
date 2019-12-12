@@ -1,7 +1,10 @@
 package org.sitenv.spring;
 
+import java.util.Date;
+
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.IdType;
+import org.hl7.fhir.r4.model.Meta;
 import org.hl7.fhir.r4.model.Observation;
 import org.sitenv.spring.configuration.AppConfig;
 import org.sitenv.spring.model.DafObservation;
@@ -50,6 +53,13 @@ public class ObservationResourceProvider implements IResourceProvider {
      */
     @Create
     public MethodOutcome createObservation(@ResourceParam Observation theObservation) {
+    	Date date = new Date();
+    	//Set meta 
+		Meta meta = new Meta();
+		meta.setVersionId("1");
+		meta.setLastUpdated(date);
+		theObservation.setMeta(meta);
+		
     	// Save this observation to the database...
     	DafObservation dafObservation = service.createObservation(theObservation);
      

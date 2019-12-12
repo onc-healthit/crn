@@ -1,8 +1,11 @@
 package org.sitenv.spring;
 
+import java.util.Date;
+
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.IdType;
+import org.hl7.fhir.r4.model.Meta;
 import org.sitenv.spring.configuration.AppConfig;
 import org.sitenv.spring.model.DafCondition;
 import org.sitenv.spring.service.ConditionService;
@@ -51,7 +54,14 @@ public class ConditionResourceProvider implements IResourceProvider {
      */
     @Create
     public MethodOutcome createCondition(@ResourceParam Condition theCondition) {
-    	// Save this observation to the database...
+    	Date date = new Date();
+    	//Set meta 
+		Meta meta = new Meta();
+		meta.setVersionId("1");
+		meta.setLastUpdated(date);
+		theCondition.setMeta(meta);
+		
+    	// Save this condition to the database...
     	DafCondition dafCondition = service.createCondition(theCondition);
      
 		MethodOutcome retVal = new MethodOutcome();

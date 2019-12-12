@@ -15,10 +15,10 @@ export class LoginPageComponent implements OnInit {
   constructor(private loginService: LoginService,
     private router: Router) {
 
-      this.isLogin = localStorage.getItem('isLogin');
-      if(this.isLogin) {
-        this.router.navigate(['/']);
-      }
+      // this.isLogin = localStorage.getItem('isLogin');
+      // if(this.isLogin) {
+      //   this.router.navigate(['/']);
+      // }
 
     this.loginForm = new FormGroup({
       userID: new FormControl('',  [Validators.required, Validators.maxLength(25), CustomValidators.validateEmail]),

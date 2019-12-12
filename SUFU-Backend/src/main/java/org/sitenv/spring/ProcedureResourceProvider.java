@@ -1,11 +1,12 @@
 package org.sitenv.spring;
 
+import java.util.Date;
+
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.IdType;
-import org.hl7.fhir.r4.model.Observation;
+import org.hl7.fhir.r4.model.Meta;
 import org.hl7.fhir.r4.model.Procedure;
 import org.sitenv.spring.configuration.AppConfig;
-import org.sitenv.spring.model.DafObservation;
 import org.sitenv.spring.model.DafProcedure;
 import org.sitenv.spring.service.ProcedureService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -54,7 +55,13 @@ public class ProcedureResourceProvider implements IResourceProvider{
      */
     @Create
     public MethodOutcome createProcedure(@ResourceParam Procedure theProcedure) {
-        System.out.println("%%%%%%% Create Procedure %%%%%%%%");
+    	Date date = new Date();
+    	//Set meta 
+		Meta meta = new Meta();
+		meta.setVersionId("1");
+		meta.setLastUpdated(date);
+		theProcedure.setMeta(meta);
+		
     	// Save this procedure to the database...
     	DafProcedure dafProcedure = service.createProcedure(theProcedure);
      

@@ -18,5 +18,4 @@ public class FHIRController {
 	public @ResponseBody Categories ccdascorecardservice(){
 		return categoryService.getAllCategories();
 	}
-
 }

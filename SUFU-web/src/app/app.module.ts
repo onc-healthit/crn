@@ -21,6 +21,7 @@ import { LoginService } from 'src/services/login.service';
 import { PatientService } from 'src/services/patient.service';
 import { TransferService } from 'src/services/transferdata.service';
 import { HeaderModule } from './header/header.module';
+import { AuthGuard } from './auth.gaurd';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { HeaderModule } from './header/header.module';
     LoginService,
     PatientService,
     TransferService,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

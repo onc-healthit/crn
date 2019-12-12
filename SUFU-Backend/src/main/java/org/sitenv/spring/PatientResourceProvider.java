@@ -36,7 +36,7 @@ import ca.uhn.fhir.rest.server.exceptions.ResourceNotFoundException;
 public class PatientResourceProvider implements IResourceProvider {
 	
 	public static final String RESOURCE_TYPE = "Patient";
-    public static final String VERSION_ID = "4";
+    public static final String VERSION_ID = "1";
     AbstractApplicationContext context;
     PatientService service;
 
@@ -107,9 +107,9 @@ public class PatientResourceProvider implements IResourceProvider {
 	 * The IdDt may or may not have the version populated depending on the client request.
 	 * This operation retrieves a resource by ID. 
 	 * It has a single parameter annotated with the @IdParam annotation.
-	 * Example URL to invoke this method: http://<server name>/<context>/fhir/Patient/1/_history/4
-	 * @param theId : Id of the patient
-	 * @return : Object of patient information
+	 * Example URL to invoke this method: http://<server name>/<context>/fhir/Patient/1/_history/1
+	 * @param theId: Id of the patient
+	 * @return thePatient: Object of patient information
 	 */
 	@Read(version=true)
     public Patient readOrVread(@IdParam IdType theId) {

@@ -33,6 +33,7 @@ public class CategoryDaoImpl implements CategoryDao {
 		// UPDATED: Execute query
 	    List<DafCategory> categoryList = session.createQuery(criteriaQuery).getResultList();
 	    session.close();
+	    
 	    return categoryList;
 	}
 

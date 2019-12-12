@@ -46,7 +46,7 @@ public class DAFServer extends RestfulServer {
         resourceProviders.add(new ProcedureResourceProvider());
         resourceProviders.add(new DeviceResourceProvider());
         resourceProviders.add(new ConditionResourceProvider());
-
+        resourceProviders.add(new EncounterResourceProvider());
         setResourceProviders(resourceProviders);
 
         //setServerConformanceProvider(new CapabilityStatementResourceProvider());

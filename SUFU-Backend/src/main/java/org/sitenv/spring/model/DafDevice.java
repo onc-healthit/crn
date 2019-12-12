@@ -14,6 +14,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.sitenv.spring.configuration.JSONObjectUserType;
 
 @Entity
@@ -32,6 +33,7 @@ public class DafDevice {
 	
 	@Column(name="last_updated_ts")
     @Temporal(TemporalType.TIMESTAMP)
+	@UpdateTimestamp
     private Date timestamp;
 
 	public Integer getId() {

@@ -1,6 +1,5 @@
 package org.sitenv.spring;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,25 +7,27 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.hl7.fhir.instance.model.api.IBaseResource;
-import org.hl7.fhir.r4.model.CanonicalType;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.DateTimeType;
+import org.hl7.fhir.r4.model.DateType;
 import org.hl7.fhir.r4.model.DecimalType;
 import org.hl7.fhir.r4.model.Device;
 import org.hl7.fhir.r4.model.Device.DeviceUdiCarrierComponent;
 import org.hl7.fhir.r4.model.Encounter;
+import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.IdType;
 import org.hl7.fhir.r4.model.Meta;
 import org.hl7.fhir.r4.model.Observation;
+import org.hl7.fhir.r4.model.Period;
 import org.hl7.fhir.r4.model.Procedure;
 import org.hl7.fhir.r4.model.Quantity;
 import org.hl7.fhir.r4.model.QuestionnaireResponse;
 import org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent;
 import org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent;
 import org.hl7.fhir.r4.model.Reference;
-
+import org.hl7.fhir.r4.model.StringType;
 import org.sitenv.spring.configuration.AppConfig;
 import org.sitenv.spring.model.DafQuestionnaireResponse;
 import org.sitenv.spring.service.QuestionnaireResponseService;
@@ -66,6 +67,7 @@ public class QuestionnaireResponseResourceProvider  implements IResourceProvider
     ProcedureResourceProvider procedureResourceProvider = new ProcedureResourceProvider();
     DeviceResourceProvider deviceResourceProvider = new DeviceResourceProvider();
     ConditionResourceProvider conditionResourceProvider = new ConditionResourceProvider();
+    EncounterResourceProvider encounterResourceProvider = new EncounterResourceProvider();
 
     
     /**
@@ -103,14 +105,33 @@ public class QuestionnaireResponseResourceProvider  implements IResourceProvider
 		Reference thePatient = theQuestionnaireResponse.getSubject();
 		String theReference = thePatient.getReference();
 		String[] id = theReference.split("/");
-		System.out.println("Patient id is ===="+id[1]);
 		String patientId = id[1];
+		StringType UDI = null;
+		StringType deviceType = null;
+		DateType encounterDate = null;
+		StringType encounterReason = null;
 		List<QuestionnaireResponseItemComponent> qrItemComponentListOutter =  theQuestionnaireResponse.getItem();
 		int noOfOutterItems = qrItemComponentListOutter.size();
 		for(int i = 0; i < noOfOutterItems; i++) {
 			QuestionnaireResponseItemComponent theQRItemComponentOutter = qrItemComponentListOutter.get(i);
 			List<QuestionnaireResponseItemComponent> qrItemComponentListInner = theQRItemComponentOutter.getItem();
 			int noOfInnerItems = qrItemComponentListInner.size();
+			String questionnaireInnerText = theQRItemComponentOutter.getText();
+			//Check for Encounter
+			if(questionnaireInnerText.equalsIgnoreCase("Date of visit")) {
+				QuestionnaireResponseItemAnswerComponent datePeriod = theQRItemComponentOutter.getAnswerFirstRep();
+				encounterDate = datePeriod.getValueDateType();
+			}
+			if(questionnaireInnerText.equalsIgnoreCase("What is the reason for this visit? Briefly describe")) {
+				QuestionnaireResponseItemAnswerComponent visitReason = theQRItemComponentOutter.getAnswerFirstRep();
+				encounterReason = visitReason.getValueStringType();
+			}
+			if(encounterDate != null && encounterReason != null) {
+				Encounter theEncounter = constructEncounterResourceObj(encounterDate, encounterReason, patientId);
+				encounterResourceProvider.createEncounter(theEncounter);
+				encounterDate = null;
+				encounterReason= null;
+			}
 			for(int j = 0; j < noOfInnerItems; j++) {
 				QuestionnaireResponseItemComponent theQRItemComponentInner = qrItemComponentListInner.get(j);
 				String questionnaireText = theQRItemComponentInner.getText();
@@ -119,56 +140,45 @@ public class QuestionnaireResponseResourceProvider  implements IResourceProvider
 					QuestionnaireResponseItemAnswerComponent diagnosisType = theQRItemComponentInner.getAnswerFirstRep();
 					Coding diagnosisCoding = diagnosisType.getValueCoding();
 					Condition theCondition = constructConditionResourceObj(diagnosisCoding, patientId);
-					if(!theCondition.isEmpty()) {
-						try {
-							conditionResourceProvider.createCondition(theCondition);
-						}catch(Exception e) {
-							e.printStackTrace();
-						}
-					}
+					conditionResourceProvider.createCondition(theCondition);	
 				}
-				
 				//Check for procedure
 				if(questionnaireText.equalsIgnoreCase("Type of incontinence procedure performed")) {
 					QuestionnaireResponseItemAnswerComponent procedureType = theQRItemComponentInner.getAnswerFirstRep();
 					Coding procedureCoding = procedureType.getValueCoding();
 					Procedure theProcedure = constructProcedureResourceObj(procedureCoding, patientId);
-					if(!theProcedure.isEmpty()) {
-						try {
-							procedureResourceProvider.createProcedure(theProcedure);
-						}catch(Exception e) {
-							e.printStackTrace();
-						}
-					}
+					procedureResourceProvider.createProcedure(theProcedure);
 				}
 				//Check for weight text
 				if(questionnaireText.equalsIgnoreCase("Weight (in pounds)")) {
 					QuestionnaireResponseItemAnswerComponent weightAsnwer = theQRItemComponentInner.getAnswerFirstRep();
 					DecimalType weight = weightAsnwer.getValueDecimalType();
-					System.out.println("WEIGHT IS ======>>>> "+weight);
-					Observation theWObservation = constructObservationResourceObj(weight, "pounds", patientId);
-					if(!theWObservation.isEmpty()) {
-						try {
-							observationResourceProvider.createObservation(theWObservation);
-						}catch(Exception e) {
-							e.printStackTrace();
-						}
-					}
+					Observation theWObservation = constructObservationResourceObj(weight, "pounds", patientId, "Weight");
+					observationResourceProvider.createObservation(theWObservation);
 				}
 				//Check for height text
 				if(questionnaireText.equalsIgnoreCase("Height (in inches)")) {
 					QuestionnaireResponseItemAnswerComponent heightAsnwer = theQRItemComponentInner.getAnswerFirstRep();
 					DecimalType height = heightAsnwer.getValueDecimalType();
-					System.out.println("HEIGHT IS ======>>>> "+height);
-					Observation theHObservation = constructObservationResourceObj(height, "inches", patientId);
-					if(!theHObservation.isEmpty()) {
-						try {
-							observationResourceProvider.createObservation(theHObservation);
-						}catch(Exception e) {
-							e.printStackTrace();
-						}
-					}
+					Observation theHObservation = constructObservationResourceObj(height, "inches", patientId, "Height");
+					observationResourceProvider.createObservation(theHObservation);
 				}
+				//Check for Device
+				if(questionnaireText.equalsIgnoreCase("UDI (numbers only, max 14 digits)")) {
+					QuestionnaireResponseItemAnswerComponent uidAsnwer = theQRItemComponentInner.getAnswerFirstRep();
+					 UDI = uidAsnwer.getValueStringType();
+				}
+				if(questionnaireText.equalsIgnoreCase("Device Description")) {
+					QuestionnaireResponseItemAnswerComponent device = theQRItemComponentInner.getAnswerFirstRep();
+					deviceType = device.getValueStringType(); 
+				}
+				if(UDI != null && deviceType != null) {
+					Device theDevice = constructDeviceResourceObj(UDI, deviceType, patientId);
+					deviceResourceProvider.createDevice(theDevice);
+					UDI = null;
+					deviceType = null;
+				}
+				
 			}
 		}
 		// Save this QuestionnaireResponse to the database...
@@ -189,16 +199,9 @@ public class QuestionnaireResponseResourceProvider  implements IResourceProvider
 	 * @param patientId
 	 * @return theDevice
 	 */
-	private Device constructDeviceResourceObj(String deviceId, String patientId) {
+	private Device constructDeviceResourceObj(StringType udi, StringType type, String patientId) {
 		Device theDevice = new Device();
 		theDevice.setId(new IdType("Device", UUID.randomUUID() + "", "1"));
-		Date date = new Date();
-		
-		//Set meta 
-		Meta meta = new Meta();
-		meta.setVersionId("1");
-		meta.setLastUpdated(date);
-		theDevice.setMeta(meta);
 		
 		//Set status 
 		theDevice.setStatus(Device.FHIRDeviceStatus.ACTIVE);
@@ -211,10 +214,21 @@ public class QuestionnaireResponseResourceProvider  implements IResourceProvider
 		//Set udiCarrier
 		List<DeviceUdiCarrierComponent> udiCarrierList = new ArrayList<DeviceUdiCarrierComponent>();
 		DeviceUdiCarrierComponent theUdiCarrier = new DeviceUdiCarrierComponent();
-		theUdiCarrier.setDeviceIdentifier(deviceId);
+		String UDI = udi.asStringValue();
+		theUdiCarrier.setDeviceIdentifier(UDI);
+		theUdiCarrier.setCarrierHRF(UDI);
 		udiCarrierList.add(theUdiCarrier);
 		theDevice.setUdiCarrier(udiCarrierList);
 		
+		//Set type
+		CodeableConcept theType = new CodeableConcept();
+		List<Coding> theDeviceCodingList = new ArrayList<Coding>();
+		Coding theDeviceCoding = new Coding();
+		theDeviceCoding.setSystem("http://snomed.info/sct");
+		theDeviceCoding.setDisplay(UDI);
+		theDeviceCodingList.add(theDeviceCoding);
+		theType.setCoding(theDeviceCodingList);
+		theType.setText(UDI);
 		return theDevice;
 	}
 	
@@ -225,16 +239,9 @@ public class QuestionnaireResponseResourceProvider  implements IResourceProvider
 	 * @param patientId
 	 * @return theEncounter
 	 */
-	private Encounter constructEncounterResourceObj(String patientId) {
+	private Encounter constructEncounterResourceObj(DateType encounterDate, StringType encounterReason, String patientId) {
 		Encounter theEncounter = new Encounter();
 		theEncounter.setId(new IdType("Encounter", UUID.randomUUID() + "", "1"));
-		Date date = new Date();
-		
-		//Set meta 
-		Meta meta = new Meta();
-		meta.setVersionId("1");
-		meta.setLastUpdated(date);
-		theEncounter.setMeta(meta);
 		
 		//Set status 
 		theEncounter.setStatus(Encounter.EncounterStatus.FINISHED);
@@ -244,9 +251,30 @@ public class QuestionnaireResponseResourceProvider  implements IResourceProvider
 		thePatient.setReference("Patient/"+patientId);
 		theEncounter.setSubject(thePatient);
 	
-		//Set 
+		//Set period
+		Period thePeriod = new Period();
+		Date period = encounterDate.getValue();
+		thePeriod.setStart(period);
+		thePeriod.setEnd(period);
+		theEncounter.setPeriod(thePeriod);
+		
+		//Set type
+		List<CodeableConcept> typeEncounterList = new ArrayList<CodeableConcept>();
+		CodeableConcept theEncounterType = new CodeableConcept();
+		List<Coding> encounterCodings = new ArrayList<Coding>();
+		Coding theEncounterCoding = new Coding();
+		theEncounterCoding.setSystem("http://www.ama-assn.org/go/cpt");
+		String display = encounterReason.asStringValue();
+		theEncounterCoding.setDisplay(display);
+		encounterCodings.add(theEncounterCoding);
+		theEncounterType.setCoding(encounterCodings);
+		theEncounterType.setText(display);
+		typeEncounterList.add(theEncounterType);
+		theEncounter.setType(typeEncounterList);
+		
 		return theEncounter;
 	}
+	
 	/**
 	 * creates procedure resource object
 	 * 
@@ -257,13 +285,6 @@ public class QuestionnaireResponseResourceProvider  implements IResourceProvider
 	private Procedure constructProcedureResourceObj(Coding procedureCoding, String patientId) {
 		Procedure theProcedure = new Procedure();
 		theProcedure.setId(new IdType("Procedure", UUID.randomUUID() + "", "1"));
-		Date date = new Date();
-		
-		//Set meta 
-		Meta meta = new Meta();
-		meta.setVersionId("1");
-		meta.setLastUpdated(date);
-		theProcedure.setMeta(meta);
 		
 		//Set status 
 		theProcedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
@@ -275,6 +296,7 @@ public class QuestionnaireResponseResourceProvider  implements IResourceProvider
 				
 		//Set performed dateTime
 		DateTimeType thePerformedDateTime= new DateTimeType();
+		Date date = new Date();
     	thePerformedDateTime.setValue(date);
     	theProcedure.setPerformed(thePerformedDateTime);
     	
@@ -299,29 +321,36 @@ public class QuestionnaireResponseResourceProvider  implements IResourceProvider
 	 * @param weight
 	 * @return theObservation
 	 */
-	private Observation constructObservationResourceObj(DecimalType value, String unit, String patientId) {
+	private Observation constructObservationResourceObj(DecimalType value, String unit, String patientId, String type) {
 		Observation theObservation = new Observation();
-		theObservation.setId(new IdType("Observation", UUID.randomUUID() + "", "1"));
-	
-		//Set meta 
-		Meta meta = new Meta();
-		meta.setVersionId("1");
+		theObservation.setId(new IdType("Observation", UUID.randomUUID() + "", "1"));		
 		Date date = new Date();
-		meta.setLastUpdated(date);
-		theObservation.setMeta(meta);
 		
 		//Set status 
 		theObservation.setStatus(Observation.ObservationStatus.FINAL);
 		
-		// Set Value Quantity for weight
-		Quantity theWeightQuantity = new Quantity();
-		theWeightQuantity.setValueElement(value);
-		theWeightQuantity.setUnit(unit);
-		theWeightQuantity.setSystem("http://unitsofmeasure.org");
-		theWeightQuantity.setCode("%");
-		theObservation.setValue(theWeightQuantity);
-		
-		// Set code
+		//Set Value Quantity
+		Quantity theQuantity = new Quantity();
+		theQuantity.setValueElement(value);
+		theQuantity.setUnit(unit);
+		theQuantity.setSystem("http://unitsofmeasure.org");
+		theQuantity.setCode("%");
+		List<Extension> extensionList = new ArrayList<Extension>();
+		Extension theExtennsion = new Extension();
+		if(type.equalsIgnoreCase("Height")) {
+			theExtennsion.setUrl("http://hl7.org/fhir/StructureDefinition/bodyheight");
+		}
+		else {
+			theExtennsion.setUrl("http://hl7.org/fhir/StructureDefinition/bodyweight");
+		}
+		StringType uType = new StringType();
+		uType.setValueAsString(type);
+		theExtennsion.setValue(uType);
+		extensionList.add(theExtennsion);
+		theQuantity.setExtension(extensionList);
+		theObservation.setValue(theQuantity);
+
+		//Set code
 		CodeableConcept theCode = new CodeableConcept();
 		List<Coding> codingList = new ArrayList<Coding>();
 		Coding theCoding = new Coding();
@@ -363,13 +392,6 @@ public class QuestionnaireResponseResourceProvider  implements IResourceProvider
 	private Condition constructConditionResourceObj(Coding conditionCoding, String patientId) {
 		Condition theCondition = new Condition();
 		theCondition.setId(new IdType("Condition", UUID.randomUUID() + "", "1"));
-		Date date = new Date();
-		
-		//Set meta 
-		Meta meta = new Meta();
-		meta.setVersionId("1");
-		meta.setLastUpdated(date);
-		theCondition.setMeta(meta);
 		
 		//Set clinicalStatus 
 		CodeableConcept theClinicalStatus = new CodeableConcept();
